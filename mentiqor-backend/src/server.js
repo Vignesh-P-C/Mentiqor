@@ -55,7 +55,6 @@ app.get('/questions', async (req, res) => {
 app.post('/attempt', async (req, res) => {
   const { user_id, question_id, selected } = req.body;
 
-  // --- Input validation ---
   if (!user_id || !question_id || !selected) {
     return res.status(400).json({ error: 'user_id, question_id, and selected are required.' });
   }
@@ -68,7 +67,6 @@ app.post('/attempt', async (req, res) => {
   const selectedUpper = selected.toUpperCase();
 
   try {
-    // --- Step 1: Fetch the question ---
     const qResult = await pool.query(
       'SELECT correct, explanation FROM questions WHERE id = $1',
       [question_id]
@@ -80,19 +78,135 @@ app.post('/attempt', async (req, res) => {
 
     const { correct, explanation } = qResult.rows[0];
     const is_correct = selectedUpper === correct;
+    const marks = is_correct ? 4 : -1;   // JEE Mains marking scheme
 
-    // --- Step 2: Save the attempt ---
     await pool.query(
-      `INSERT INTO attempts (user_id, question_id, selected, is_correct)
-       VALUES ($1, $2, $3, $4)`,
-      [user_id, question_id, selectedUpper, is_correct]
+      `INSERT INTO attempts (user_id, question_id, selected, is_correct, marks)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [user_id, question_id, selectedUpper, is_correct, marks]
     );
 
-    // --- Step 3: Return instant feedback ---
     res.json({
       is_correct,
       correct_option: correct,
+      marks_awarded: marks,
       explanation: explanation || null,
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/stats/:user_id', async (req, res) => {
+  const { user_id } = req.params;
+
+  try {
+    const overallResult = await pool.query(
+      `SELECT
+        COUNT(*) AS total_attempted,
+        SUM(CASE WHEN is_correct THEN 1 ELSE 0 END) AS total_correct,
+        SUM(CASE WHEN NOT is_correct THEN 1 ELSE 0 END) AS total_incorrect,
+        ROUND(
+          100.0 * SUM(CASE WHEN is_correct THEN 1 ELSE 0 END) / COUNT(*), 2
+        ) AS accuracy_percent,
+        SUM(marks) AS total_marks
+       FROM attempts
+       WHERE user_id = $1`,
+      [user_id]
+    );
+
+    const subjectResult = await pool.query(
+      `SELECT
+        q.subject,
+        COUNT(*) AS attempted,
+        SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) AS correct,
+        ROUND(
+          100.0 * SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) / COUNT(*), 2
+        ) AS accuracy_percent,
+        SUM(a.marks) AS total_marks
+       FROM attempts a
+       JOIN questions q ON a.question_id = q.id
+       WHERE a.user_id = $1
+       GROUP BY q.subject`,
+      [user_id]
+    );
+
+    const overall = overallResult.rows[0];
+
+    if (parseInt(overall.total_attempted) === 0) {
+      return res.status(404).json({ error: 'No attempts found for this user.' });
+    }
+
+    res.json({
+      user_id,
+      overall: {
+        total_attempted: parseInt(overall.total_attempted),
+        total_correct: parseInt(overall.total_correct),
+        total_incorrect: parseInt(overall.total_incorrect),
+        accuracy_percent: parseFloat(overall.accuracy_percent),
+        total_marks: parseInt(overall.total_marks),
+      },
+      by_subject: subjectResult.rows.map(row => ({
+        subject: row.subject,
+        attempted: parseInt(row.attempted),
+        correct: parseInt(row.correct),
+        accuracy_percent: parseFloat(row.accuracy_percent),
+        total_marks: parseInt(row.total_marks),
+      })),
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/weak-topics/:user_id', async (req, res) => {
+  const { user_id } = req.params;
+  const threshold = parseFloat(req.query.threshold) || 60.0;
+
+  try {
+    const result = await pool.query(
+      `SELECT
+        q.subject,
+        q.chapter,
+        COUNT(*) AS attempted,
+        SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) AS correct,
+        ROUND(
+          100.0 * SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) / COUNT(*), 2
+        ) AS accuracy_percent
+       FROM attempts a
+       JOIN questions q ON a.question_id = q.id
+       WHERE a.user_id = $1
+       GROUP BY q.subject, q.chapter
+       HAVING ROUND(
+         100.0 * SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) / COUNT(*), 2
+       ) < $2
+       ORDER BY accuracy_percent ASC`,
+      [user_id, threshold]
+    );
+
+    if (result.rows.length === 0) {
+      return res.json({
+        user_id,
+        threshold_percent: threshold,
+        weak_topics: [],
+        message: 'No weak topics found. Keep it up!',
+      });
+    }
+
+    res.json({
+      user_id,
+      threshold_percent: threshold,
+      weak_topics: result.rows.map(row => ({
+        subject: row.subject,
+        chapter: row.chapter,
+        attempted: parseInt(row.attempted),
+        correct: parseInt(row.correct),
+        accuracy_percent: parseFloat(row.accuracy_percent),
+      })),
     });
 
   } catch (err) {
