@@ -1,0 +1,15 @@
+# Node modules
+node_modules/
+mentiqor-backend/node_modules/
+
+# Env files (VERY IMPORTANT)
+.env
+*.env
+
+# Logs
+*.log
+logs/
+
+# OS junk
+.DS_Store
+Thumbs.db
