@@ -1,313 +1,184 @@
-# 🧠 Mentiqor — Intelligent Academic Practice & Analytics Platform
+# 🧠 Mentiqor — JEE Mains Practice Platform
 
-Mentiqor is a full-stack web application designed to help students practice MCQs, track performance, and identify weak areas using data-driven insights.
+Mentiqor is a full-stack practice platform designed to help students prepare for **JEE Mains** through structured quizzes, performance tracking, and detailed analytics.
 
-It combines a **React frontend**, **Node.js backend**, and **Supabase PostgreSQL database** to deliver a seamless and scalable learning experience.
-
----
-
-# 🚀 Features
-
-## 🎯 Core Functionality
-
-* Practice MCQs with instant feedback
-* JEE-style marking scheme (+4 / -1)
-* Explanation after each question
-* Randomized question delivery
-* Persistent user tracking
-
-## 📊 Analytics (Backend Ready)
-
-* Overall performance stats
-* Subject-wise accuracy tracking
-* Weak topic detection
-* Marks aggregation
-
-## 🧑‍💻 User Handling
-
-* Auto-generated user ID using `localStorage`
-* Tracks attempts per user without authentication system (for now)
+It focuses on **real exam simulation**, **topic-wise practice**, and **data-driven improvement**.
 
 ---
 
-# 🏗️ Tech Stack
+## 🚀 Features
 
-## Frontend
+### 🔐 Authentication
 
-* React (Vite)
-* React Router DOM
-* Vanilla CSS (custom styling)
-
-## Backend
-
-* Node.js
-* Express.js
-* PostgreSQL (via Supabase)
-* pg (node-postgres)
-
-## Database
-
-* Supabase (hosted PostgreSQL)
+* Secure user authentication (Sign up / Sign in)
+* Persistent sessions using Supabase Auth
+* User-specific data tracking (no shared progress)
 
 ---
 
-# 🗂️ Project Structure
+### 📝 Practice System
 
-```
-mentiqor/
-│
-├── mentiqor-frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   │   ├── Quiz.jsx
-│   │   │   └── Dashboard.jsx
-│   │   ├── services/
-│   │   │   └── api.js
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│
-├── mentiqor-backend/
-│   ├── src/
-│   │   ├── db/
-│   │   │   └── index.js
-│   │   ├── routes/
-│   │   ├── controllers/
-│   │   └── server.js
-│
-└── README.md
-```
+* Start quizzes with:
+
+  * Subject selection (Physics, Chemistry, Mathematics)
+  * Chapter-wise filtering
+  * Adjustable time limits (30 min → 3 hours)
+* Smart question distribution based on JEE patterns
+* Shuffled questions for realistic practice
 
 ---
 
-# ⚙️ Setup Instructions
+### ⏱️ Quiz Interface
 
-## 1️⃣ Clone the Repository
+* Real-time countdown timer
+* Question navigation panel (jump to any question)
+* Answer, skip, and revisit functionality
+* Progress tracking:
 
-```
-git clone <your-repo-url>
+  * Answered
+  * Skipped
+  * Pending
+* Smooth navigation (Previous / Next)
+
+---
+
+### 📊 Performance Dashboard
+
+* Session-based analytics
+* Metrics tracked:
+
+  * Total attempts
+  * Accuracy %
+  * Total marks
+  * Correct vs Incorrect
+
+#### 📈 Visual Insights
+
+* Accuracy trends over sessions
+* Attempt breakdown (correct vs incorrect)
+* Subject-wise accuracy comparison
+
+---
+
+### 🎯 Weak Topic Detection
+
+* Automatically identifies topics with low accuracy
+* Helps focus on high-impact improvement areas
+
+---
+
+### 🕘 Session History
+
+* View recent quiz attempts
+* Track:
+
+  * Accuracy
+  * Score changes
+  * Chapters attempted
+  * Date of attempt
+
+---
+
+## 🖥️ UI Overview
+
+### 🔑 Authentication Screen
+
+Clean and minimal login/signup interface.
+
+### 🎯 Practice Setup
+
+Select subject, chapters, and time before starting a quiz.
+
+### 📊 Dashboard
+
+Detailed analytics with charts and performance breakdown.
+
+### 🧠 Quiz Interface
+
+Distraction-free exam environment with full navigation support.
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React
+* Tailwind CSS
+* Vite
+
+### Backend / Database
+
+* Supabase (Auth + Database)
+
+### Other
+
+* Charting library for analytics
+* Modular component architecture
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/mentiqor.git
 cd mentiqor
 ```
 
----
+### 2. Install dependencies
 
-## 2️⃣ Backend Setup
-
-```
-cd mentiqor-backend
+```bash
 npm install
 ```
 
-### Create `.env` file
+### 3. Configure environment variables
 
-```
-DATABASE_URL=your_supabase_connection_string
-PORT=5000
-```
+Create a `.env` file:
 
----
-
-## 🧠 Supabase Setup
-
-### Step 1: Create Project
-
-* Go to https://supabase.com
-* Create a new project
-
----
-
-### Step 2: Get Connection String
-
-Go to:
-
-```
-Project Settings → Database → Connection string → URI
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_key
 ```
 
-Use this as your `DATABASE_URL`
+### 4. Run the project
 
----
-
-### Step 3: Create Tables
-
-#### 🧾 questions table
-
-```sql
-CREATE TABLE questions (
-  id SERIAL PRIMARY KEY,
-  question TEXT NOT NULL,
-  option_a TEXT,
-  option_b TEXT,
-  option_c TEXT,
-  option_d TEXT,
-  correct CHAR(1),
-  explanation TEXT,
-  subject TEXT,
-  chapter TEXT
-);
-```
-
----
-
-#### 📊 attempts table
-
-```sql
-CREATE TABLE attempts (
-  id SERIAL PRIMARY KEY,
-  user_id TEXT,
-  question_id INT REFERENCES questions(id),
-  selected CHAR(1),
-  is_correct BOOLEAN,
-  marks INT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
-
----
-
-## ▶️ Run Backend
-
-```
-node src/server.js
-```
-
-Expected:
-
-```
-Server running on port 5000
-```
-
----
-
-## 3️⃣ Frontend Setup
-
-```
-cd ../mentiqor-frontend
-npm install
-npm install react-router-dom
+```bash
 npm run dev
 ```
 
 ---
 
-# 🔌 API Endpoints
+## 📌 Future Improvements
 
-## GET `/questions`
-
-Fetch questions (supports filters)
-
-Query params:
-
-* `subject`
-* `chapter`
-* `limit`
+* Adaptive difficulty (AI-based question selection)
+* Leaderboards & competitive mode
+* Detailed solution explanations
+* Mobile responsiveness improvements
+* AI-based performance insights
 
 ---
 
-## POST `/attempt`
+## 🎯 Goal
 
-Request:
+Mentiqor aims to become a **complete JEE preparation ecosystem**, combining:
 
-```json
-{
-  "user_id": "abc123",
-  "question_id": 1,
-  "selected": "A"
-}
-```
+* Practice
+* Analytics
+* Personalization
 
-Response:
-
-```json
-{
-  "is_correct": true,
-  "correct_option": "A",
-  "marks_awarded": 4,
-  "explanation": "..."
-}
-```
+to help students improve efficiently.
 
 ---
 
-## GET `/stats/:user_id`
+## 👨‍💻 Author
 
-Returns:
-
-* Total attempted
-* Accuracy %
-* Total marks
-* Subject breakdown
+Developed by Vignesh
+B.Tech Student @ VIT Vellore
 
 ---
 
-## GET `/weak-topics/:user_id`
+## ⭐ If you like this project
 
-Returns:
-
-* Chapters with accuracy below threshold (default 60%)
-
----
-
-# 🎨 UI Overview
-
-* Clean quiz interface
-* Instant feedback system
-* Dark-mode compatible styling (planned dashboard UI)
-* Modular React components
-
----
-
-# 🧪 Current Status
-
-✅ Quiz system fully working
-✅ Backend API complete
-✅ Supabase integration working
-⚠️ Dashboard UI (in progress)
-⚠️ Authentication (not implemented yet)
-
----
-
-# 🧠 Future Improvements
-
-* Full analytics dashboard (charts, graphs)
-* Authentication (JWT / Supabase Auth)
-* Adaptive difficulty system
-* AI-based question recommendations
-* Timed quizzes
-* Leaderboards
-
----
-
-# ⚠️ Known Limitations
-
-* No login system (user tracked via localStorage)
-* No pagination for questions
-* Basic UI (can be enhanced further)
-
----
-
-# 🤝 Contribution
-
-This project is currently under active development.
-
-Feel free to:
-
-* Suggest improvements
-* Report bugs
-* Extend features
-
----
-
-# 📌 Author
-
-Vignesh
-B.Tech CSE — VIT Vellore
-
----
-
-# ⭐ Final Note
-
-Mentiqor is not just a quiz app —
-it is designed to evolve into a **data-driven academic intelligence system**.
-
----
+Give it a star on GitHub — it helps a lot!
