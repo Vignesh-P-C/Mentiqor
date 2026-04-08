@@ -6,14 +6,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const pool = require('./db'); // assuming this exports pool correctly
+const pool = require('./db');
 
-// Root route (optional but useful)
 app.get('/', (req, res) => {
   res.send('Mentiqor backend running');
 });
 
-// 🔹 DB test route (keep this)
 app.get('/ping-db', async (req, res) => {
   try {
     const result = await pool.query('SELECT NOW()');
@@ -23,6 +21,7 @@ app.get('/ping-db', async (req, res) => {
   }
 });
 
+// GET /questions?subject=Physics&chapter=Kinematics
 app.get('/questions', async (req, res) => {
   const { subject, chapter } = req.query;
 
@@ -43,6 +42,8 @@ app.get('/questions', async (req, res) => {
     query += ` AND chapter = $${params.length}`;
   }
 
+  query += ` ORDER BY id ASC`;
+
   try {
     const result = await pool.query(query, params);
     res.json(result.rows);
@@ -52,6 +53,7 @@ app.get('/questions', async (req, res) => {
   }
 });
 
+// POST /attempt — submit an answer
 app.post('/attempt', async (req, res) => {
   const { user_id, question_id, selected } = req.body;
 
@@ -78,7 +80,7 @@ app.post('/attempt', async (req, res) => {
 
     const { correct, explanation } = qResult.rows[0];
     const is_correct = selectedUpper === correct;
-    const marks = is_correct ? 4 : -1;   // JEE Mains marking scheme
+    const marks = is_correct ? 4 : -1;
 
     await pool.query(
       `INSERT INTO attempts (user_id, question_id, selected, is_correct, marks)
@@ -99,6 +101,7 @@ app.post('/attempt', async (req, res) => {
   }
 });
 
+// GET /stats/:user_id — overall + per-subject performance
 app.get('/stats/:user_id', async (req, res) => {
   const { user_id } = req.params;
 
@@ -129,7 +132,8 @@ app.get('/stats/:user_id', async (req, res) => {
        FROM attempts a
        JOIN questions q ON a.question_id = q.id
        WHERE a.user_id = $1
-       GROUP BY q.subject`,
+       GROUP BY q.subject
+       ORDER BY q.subject`,
       [user_id]
     );
 
@@ -142,18 +146,18 @@ app.get('/stats/:user_id', async (req, res) => {
     res.json({
       user_id,
       overall: {
-        total_attempted: parseInt(overall.total_attempted),
-        total_correct: parseInt(overall.total_correct),
-        total_incorrect: parseInt(overall.total_incorrect),
+        total_attempted:  parseInt(overall.total_attempted),
+        total_correct:    parseInt(overall.total_correct),
+        total_incorrect:  parseInt(overall.total_incorrect),
         accuracy_percent: parseFloat(overall.accuracy_percent),
-        total_marks: parseInt(overall.total_marks),
+        total_marks:      parseInt(overall.total_marks),
       },
       by_subject: subjectResult.rows.map(row => ({
-        subject: row.subject,
-        attempted: parseInt(row.attempted),
-        correct: parseInt(row.correct),
+        subject:          row.subject,
+        attempted:        parseInt(row.attempted),
+        correct:          parseInt(row.correct),
         accuracy_percent: parseFloat(row.accuracy_percent),
-        total_marks: parseInt(row.total_marks),
+        total_marks:      parseInt(row.total_marks),
       })),
     });
 
@@ -163,6 +167,7 @@ app.get('/stats/:user_id', async (req, res) => {
   }
 });
 
+// GET /weak-topics/:user_id?threshold=60
 app.get('/weak-topics/:user_id', async (req, res) => {
   const { user_id } = req.params;
   const threshold = parseFloat(req.query.threshold) || 60.0;
@@ -188,25 +193,17 @@ app.get('/weak-topics/:user_id', async (req, res) => {
       [user_id, threshold]
     );
 
-    if (result.rows.length === 0) {
-      return res.json({
-        user_id,
-        threshold_percent: threshold,
-        weak_topics: [],
-        message: 'No weak topics found. Keep it up!',
-      });
-    }
-
     res.json({
       user_id,
       threshold_percent: threshold,
       weak_topics: result.rows.map(row => ({
-        subject: row.subject,
-        chapter: row.chapter,
-        attempted: parseInt(row.attempted),
-        correct: parseInt(row.correct),
+        subject:          row.subject,
+        chapter:          row.chapter,
+        attempted:        parseInt(row.attempted),
+        correct:          parseInt(row.correct),
         accuracy_percent: parseFloat(row.accuracy_percent),
       })),
+      message: result.rows.length === 0 ? 'No weak topics found. Keep it up!' : null,
     });
 
   } catch (err) {
