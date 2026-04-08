@@ -1,215 +1,160 @@
 const express = require('express');
-const cors = require('cors');
+const cors    = require('cors');
 require('dotenv').config();
 
-const app = express();
+const app  = express();
+const pool = require('./db');
 app.use(cors());
 app.use(express.json());
 
-const pool = require('./db');
-
-app.get('/', (req, res) => {
-  res.send('Mentiqor backend running');
-});
+app.get('/', (req, res) => res.send('Mentiqor backend running'));
 
 app.get('/ping-db', async (req, res) => {
   try {
-    const result = await pool.query('SELECT NOW()');
-    res.json({ success: true, time: result.rows[0].now });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
+    const r = await pool.query('SELECT NOW()');
+    res.json({ success: true, time: r.rows[0].now });
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-// GET /questions?subject=Physics&chapter=Kinematics
+// ── Questions ─────────────────────────────────────────────────
 app.get('/questions', async (req, res) => {
   const { subject, chapter } = req.query;
-
-  let query = `
-    SELECT id, question, option_a, option_b, option_c, option_d, subject, chapter
-    FROM questions
-    WHERE 1=1
-  `;
-  const params = [];
-
-  if (subject) {
-    params.push(subject);
-    query += ` AND subject = $${params.length}`;
-  }
-
-  if (chapter) {
-    params.push(chapter);
-    query += ` AND chapter = $${params.length}`;
-  }
-
-  query += ` ORDER BY id ASC`;
-
+  let q = `SELECT id, question, option_a, option_b, option_c, option_d, subject, chapter
+           FROM questions WHERE 1=1`;
+  const p = [];
+  if (subject) { p.push(subject); q += ` AND subject = $${p.length}`; }
+  if (chapter) { p.push(chapter); q += ` AND chapter = $${p.length}`; }
+  q += ' ORDER BY id ASC';
   try {
-    const result = await pool.query(query, params);
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
-  }
+    const r = await pool.query(q, p);
+    res.json(r.rows);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// POST /attempt — submit an answer
+// ── Attempt ───────────────────────────────────────────────────
 app.post('/attempt', async (req, res) => {
   const { user_id, question_id, selected } = req.body;
-
-  if (!user_id || !question_id || !selected) {
+  if (!user_id || !question_id || !selected)
     return res.status(400).json({ error: 'user_id, question_id, and selected are required.' });
-  }
 
-  const validOptions = ['A', 'B', 'C', 'D'];
-  if (!validOptions.includes(selected.toUpperCase())) {
+  const sel = selected.toUpperCase();
+  if (!['A','B','C','D'].includes(sel))
     return res.status(400).json({ error: 'selected must be A, B, C, or D.' });
-  }
-
-  const selectedUpper = selected.toUpperCase();
 
   try {
-    const qResult = await pool.query(
-      'SELECT correct, explanation FROM questions WHERE id = $1',
-      [question_id]
-    );
+    const qr = await pool.query('SELECT correct, explanation FROM questions WHERE id = $1', [question_id]);
+    if (!qr.rows.length) return res.status(404).json({ error: 'Question not found.' });
 
-    if (qResult.rows.length === 0) {
-      return res.status(404).json({ error: 'Question not found.' });
-    }
-
-    const { correct, explanation } = qResult.rows[0];
-    const is_correct = selectedUpper === correct;
-    const marks = is_correct ? 4 : -1;
+    const { correct, explanation } = qr.rows[0];
+    const is_correct = sel === correct;
+    const marks      = is_correct ? 4 : -1;
 
     await pool.query(
-      `INSERT INTO attempts (user_id, question_id, selected, is_correct, marks)
-       VALUES ($1, $2, $3, $4, $5)`,
-      [user_id, question_id, selectedUpper, is_correct, marks]
+      `INSERT INTO attempts (user_id, question_id, selected, is_correct, marks) VALUES ($1,$2,$3,$4,$5)`,
+      [user_id, question_id, sel, is_correct, marks]
     );
 
-    res.json({
-      is_correct,
-      correct_option: correct,
-      marks_awarded: marks,
-      explanation: explanation || null,
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
-  }
+    res.json({ is_correct, correct_option: correct, marks_awarded: marks, explanation: explanation || null });
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// GET /stats/:user_id — overall + per-subject performance
+// ── Stats ─────────────────────────────────────────────────────
 app.get('/stats/:user_id', async (req, res) => {
   const { user_id } = req.params;
-
   try {
-    const overallResult = await pool.query(
-      `SELECT
-        COUNT(*) AS total_attempted,
-        SUM(CASE WHEN is_correct THEN 1 ELSE 0 END) AS total_correct,
-        SUM(CASE WHEN NOT is_correct THEN 1 ELSE 0 END) AS total_incorrect,
-        ROUND(
-          100.0 * SUM(CASE WHEN is_correct THEN 1 ELSE 0 END) / COUNT(*), 2
-        ) AS accuracy_percent,
-        SUM(marks) AS total_marks
-       FROM attempts
-       WHERE user_id = $1`,
-      [user_id]
-    );
+    const [overall, bySubject] = await Promise.all([
+      pool.query(
+        `SELECT COUNT(*) AS total_attempted,
+          SUM(CASE WHEN is_correct THEN 1 ELSE 0 END) AS total_correct,
+          SUM(CASE WHEN NOT is_correct THEN 1 ELSE 0 END) AS total_incorrect,
+          ROUND(100.0 * SUM(CASE WHEN is_correct THEN 1 ELSE 0 END) / NULLIF(COUNT(*),0), 2) AS accuracy_percent,
+          SUM(marks) AS total_marks
+         FROM attempts WHERE user_id = $1`, [user_id]
+      ),
+      pool.query(
+        `SELECT q.subject, COUNT(*) AS attempted,
+          SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) AS correct,
+          ROUND(100.0 * SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) / NULLIF(COUNT(*),0), 2) AS accuracy_percent,
+          SUM(a.marks) AS total_marks
+         FROM attempts a JOIN questions q ON a.question_id = q.id
+         WHERE a.user_id = $1 GROUP BY q.subject ORDER BY q.subject`, [user_id]
+      ),
+    ]);
 
-    const subjectResult = await pool.query(
-      `SELECT
-        q.subject,
-        COUNT(*) AS attempted,
-        SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) AS correct,
-        ROUND(
-          100.0 * SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) / COUNT(*), 2
-        ) AS accuracy_percent,
-        SUM(a.marks) AS total_marks
-       FROM attempts a
-       JOIN questions q ON a.question_id = q.id
-       WHERE a.user_id = $1
-       GROUP BY q.subject
-       ORDER BY q.subject`,
-      [user_id]
-    );
-
-    const overall = overallResult.rows[0];
-
-    if (parseInt(overall.total_attempted) === 0) {
+    const o = overall.rows[0];
+    if (parseInt(o.total_attempted) === 0)
       return res.status(404).json({ error: 'No attempts found for this user.' });
-    }
 
     res.json({
       user_id,
       overall: {
-        total_attempted:  parseInt(overall.total_attempted),
-        total_correct:    parseInt(overall.total_correct),
-        total_incorrect:  parseInt(overall.total_incorrect),
-        accuracy_percent: parseFloat(overall.accuracy_percent),
-        total_marks:      parseInt(overall.total_marks),
+        total_attempted:  parseInt(o.total_attempted),
+        total_correct:    parseInt(o.total_correct),
+        total_incorrect:  parseInt(o.total_incorrect),
+        accuracy_percent: parseFloat(o.accuracy_percent) || 0,
+        total_marks:      parseInt(o.total_marks) || 0,
       },
-      by_subject: subjectResult.rows.map(row => ({
-        subject:          row.subject,
-        attempted:        parseInt(row.attempted),
-        correct:          parseInt(row.correct),
-        accuracy_percent: parseFloat(row.accuracy_percent),
-        total_marks:      parseInt(row.total_marks),
+      by_subject: bySubject.rows.map(r => ({
+        subject:          r.subject,
+        attempted:        parseInt(r.attempted),
+        correct:          parseInt(r.correct),
+        accuracy_percent: parseFloat(r.accuracy_percent) || 0,
+        total_marks:      parseInt(r.total_marks) || 0,
       })),
     });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// GET /weak-topics/:user_id?threshold=60
+// ── Weak topics ───────────────────────────────────────────────
 app.get('/weak-topics/:user_id', async (req, res) => {
-  const { user_id } = req.params;
-  const threshold = parseFloat(req.query.threshold) || 60.0;
-
+  const { user_id }  = req.params;
+  const threshold    = parseFloat(req.query.threshold) || 60.0;
   try {
-    const result = await pool.query(
-      `SELECT
-        q.subject,
-        q.chapter,
-        COUNT(*) AS attempted,
+    const r = await pool.query(
+      `SELECT q.subject, q.chapter, COUNT(*) AS attempted,
         SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) AS correct,
-        ROUND(
-          100.0 * SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) / COUNT(*), 2
-        ) AS accuracy_percent
-       FROM attempts a
-       JOIN questions q ON a.question_id = q.id
+        ROUND(100.0 * SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) / NULLIF(COUNT(*),0), 2) AS accuracy_percent
+       FROM attempts a JOIN questions q ON a.question_id = q.id
        WHERE a.user_id = $1
        GROUP BY q.subject, q.chapter
-       HAVING ROUND(
-         100.0 * SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) / COUNT(*), 2
-       ) < $2
-       ORDER BY accuracy_percent ASC`,
-      [user_id, threshold]
+       HAVING ROUND(100.0 * SUM(CASE WHEN a.is_correct THEN 1 ELSE 0 END) / NULLIF(COUNT(*),0), 2) < $2
+       ORDER BY accuracy_percent ASC`, [user_id, threshold]
     );
-
     res.json({
-      user_id,
-      threshold_percent: threshold,
-      weak_topics: result.rows.map(row => ({
+      user_id, threshold_percent: threshold,
+      weak_topics: r.rows.map(row => ({
         subject:          row.subject,
         chapter:          row.chapter,
         attempted:        parseInt(row.attempted),
         correct:          parseInt(row.correct),
-        accuracy_percent: parseFloat(row.accuracy_percent),
+        accuracy_percent: parseFloat(row.accuracy_percent) || 0,
       })),
-      message: result.rows.length === 0 ? 'No weak topics found. Keep it up!' : null,
     });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
 
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
-  }
+// ── Sessions ──────────────────────────────────────────────────
+app.get('/sessions/:user_id', async (req, res) => {
+  try {
+    const r = await pool.query(
+      `SELECT * FROM sessions WHERE user_id = $1 ORDER BY created_at ASC`,
+      [req.params.user_id]
+    );
+    res.json(r.rows);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.post('/session', async (req, res) => {
+  const { user_id, subject, chapters, total_questions, attempted, correct, marks, accuracy_percent, time_taken_seconds } = req.body;
+  if (!user_id) return res.status(400).json({ error: 'user_id required.' });
+  try {
+    const r = await pool.query(
+      `INSERT INTO sessions (user_id, subject, chapters, total_questions, attempted, correct, marks, accuracy_percent, time_taken_seconds)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
+      [user_id, subject, chapters, total_questions || 0, attempted || 0, correct || 0, marks || 0, accuracy_percent || 0, time_taken_seconds || 0]
+    );
+    res.json(r.rows[0]);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 const PORT = process.env.PORT || 5000;
