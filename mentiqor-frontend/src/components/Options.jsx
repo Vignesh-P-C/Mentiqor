@@ -20,7 +20,7 @@ export default function Options({ question, selected, result, onSelect, disabled
           key={opt}
           className={getBtnClass(opt)}
           onClick={() => onSelect(opt)}
-          disabled={!!selected || disabled}
+          disabled={disabled}
         >
           <span className="option-label">{opt}</span>
           <span className="option-text">

@@ -208,3 +208,47 @@
   .user-email  { display: none; }
   .main-content { padding: 20px 14px 48px; }
 }
+
+/* Warm Brown Dark Mode */
+[data-theme="dark"],
+.dark {
+  /* Base background – warm dark brown */
+  --bg: #1a1512;
+  
+  /* Surfaces – layered warm browns */
+  --surface: #221c18;
+  --surface-2: #2b231e;
+  --surface-3: #352b24;
+  
+  /* Borders – subtle warm tones */
+  --border: #3a2f27;
+  --border-2: #4a3c32;
+  --border-accent: #c47a44;
+  
+  /* Text colors – warm off-white / beige */
+  --text: #f5ede4;
+  --text-muted: #c7b7a8;
+  --text-dim: #9e8b7a;
+  
+  /* Accent – amber / burnt orange */
+  --accent: #d97706;
+  --accent-2: #f59e0b;
+  --accent-bg: rgba(217, 119, 6, 0.12);
+  --accent-glow: rgba(217, 119, 6, 0.3);
+  
+  /* Status colors – warm greens and reds (muted) */
+  --status-answered: #65a30d;
+  --status-answered-bg: rgba(101, 163, 13, 0.12);
+  --status-unanswered: #dc2626;
+  --status-unanswered-bg: rgba(220, 38, 38, 0.12);
+  --status-marked: #f59e0b;
+  --status-marked-bg: rgba(245, 158, 11, 0.12);
+  
+  /* Gradients – warm amber/brown */
+  --gradient-accent: linear-gradient(135deg, #d97706, #92400e);
+  --gradient-accent-soft: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(146, 64, 14, 0.15));
+  
+  /* Glass effect – warm translucent */
+  --glass: rgba(34, 28, 24, 0.85);
+  --glass-border: rgba(217, 119, 6, 0.25);
+}

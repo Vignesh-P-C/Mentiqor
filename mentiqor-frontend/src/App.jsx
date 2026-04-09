@@ -4,6 +4,8 @@ import { useTheme } from './hooks/useTheme';
 import Auth         from './pages/Auth';
 import Quiz         from './pages/Quiz';
 import Dashboard    from './pages/Dashboard';
+import Materials from './pages/Materials';
+
 import './App.css';
 
 export default function App() {
@@ -36,6 +38,9 @@ export default function App() {
           <button className={`nav-btn ${page === 'dashboard' ? 'active' : ''}`} onClick={() => setPage('dashboard')}>
             Dashboard
           </button>
+          <button className={`nav-btn ${page === 'materials' ? 'active' : ''}`} onClick={() => setPage('materials')}>
+            Materials
+          </button>
         </div>
 
         <div className="nav-right">
@@ -48,10 +53,9 @@ export default function App() {
       </nav>
 
       <main className="main-content">
-        {page === 'quiz'
-          ? <Quiz      userId={user.id} onNavigate={setPage} />
-          : <Dashboard userId={user.id} onNavigate={setPage} />
-        }
+        {page === 'quiz'      && <Quiz      userId={user.id} onNavigate={setPage} />}
+        {page === 'dashboard' && <Dashboard userId={user.id} onNavigate={setPage} />}
+        {page === 'materials' && <Materials />}
       </main>
     </div>
   );
