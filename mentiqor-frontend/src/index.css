@@ -4,13 +4,13 @@
 ───────────────────────────────────────────────── */
 
 /* 1. Design tokens (CSS variables for both themes) */
-@import './styles/tokens.css';
+@import './Styles/tokens.css';
 
 /* 2. Base reset, typography, keyframes */
-@import './styles/base.css';
+@import './Styles/base.css';
 
 /* 3. All component styles */
-@import './styles/components.css';
+@import './Styles/components.css';
 
 /* 4. Utility classes + responsive */
-@import './styles/utilities.css';
+@import './Styles/utilities.css';
