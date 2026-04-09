@@ -1,127 +1,87 @@
-import Timer from './Timer';
-
-const STATUS = {
-  current:     { bg: 'var(--accent)',      color: '#fff',           border: 'var(--accent)' },
-  answered:    { bg: 'var(--accent-bg)',   color: 'var(--accent-2)', border: 'var(--accent)' },
-  skipped:     { bg: 'var(--warning-bg)',  color: 'var(--warning)',  border: 'var(--warning)' },
-  unattempted: { bg: 'transparent',        color: 'var(--text-muted)', border: 'var(--border-2)' },
+const STATUS_CLASS = {
+  current:     'current',
+  answered:    'answered',
+  skipped:     'skipped',
+  unattempted: 'unattempted',
 };
 
+const LEGEND = [
+  { key: 'answered',    label: 'Answered',    color: 'var(--status-answered)' },
+  { key: 'skipped',     label: 'Skipped',     color: 'var(--status-marked)' },
+  { key: 'unattempted', label: 'Not attempted', color: 'var(--status-not-visited)' },
+];
+
 export default function QuizSidebar({ questions, currentIndex, answers, skipped, timeLeft, onNavigate, onSubmit, onExpire }) {
-  const answered   = Object.keys(answers).length;
-  const skippedCnt = skipped.size;
-  const total      = questions.length;
-  const unattempted = total - answered - skippedCnt;
+  const answered    = Object.keys(answers).length;
+  const skippedCnt  = skipped.size;
+  const unattempted = questions.length - answered - skippedCnt;
+
+  // Timer logic
+  const h   = Math.floor(timeLeft / 3600);
+  const m   = Math.floor((timeLeft % 3600) / 60);
+  const s   = timeLeft % 60;
+  const fmt = (n) => String(n).padStart(2, '0');
+  const display = h > 0 ? `${fmt(h)}:${fmt(m)}:${fmt(s)}` : `${fmt(m)}:${fmt(s)}`;
+  const timerClass = timeLeft <= 120 ? 'danger' : timeLeft <= 300 ? 'warning' : 'safe';
 
   const getStatus = (i) => {
-    if (i === currentIndex) return 'current';
-    if (answers[i] !== undefined) return 'answered';
-    if (skipped.has(i)) return 'skipped';
+    if (i === currentIndex)         return 'current';
+    if (answers[i] !== undefined)   return 'answered';
+    if (skipped.has(i))             return 'skipped';
     return 'unattempted';
   };
 
+  const counts = {
+    answered:    answered,
+    skipped:     skippedCnt,
+    unattempted: unattempted,
+  };
+
   return (
-    <div style={S.sidebar}>
+    <div className="quiz-sidebar">
       {/* Timer */}
-      <div style={S.timerCard}>
-        <Timer seconds={timeLeft} onExpire={onExpire} />
+      <div className="timer-card">
+        <div className="timer-label">Time Remaining</div>
+        <div className={`timer-display ${timerClass}`}>{display}</div>
       </div>
 
       {/* Legend */}
-      <div style={S.legend}>
-        {[
-          { label: `${answered} Answered`,    color: 'var(--accent-2)' },
-          { label: `${skippedCnt} Skipped`,   color: 'var(--warning)' },
-          { label: `${unattempted} Pending`,  color: 'var(--text-muted)' },
-        ].map(({ label, color }) => (
-          <span key={label} style={{ ...S.legendItem, color }}>{label}</span>
+      <div className="quiz-legend">
+        {LEGEND.map(({ key, label, color }) => (
+          <div key={key} className="legend-item">
+            <span className="legend-dot" style={{ background: color }} />
+            <span>{label}</span>
+            <span className="legend-count" style={{ color }}>{counts[key]}</span>
+          </div>
         ))}
+        <div className="legend-item">
+          <span className="legend-dot" style={{ background: 'var(--accent)' }} />
+          <span>Current</span>
+          <span className="legend-count" style={{ color: 'var(--accent)' }}>Q{currentIndex + 1}</span>
+        </div>
       </div>
 
-      {/* Question grid */}
-      <div style={S.grid}>
-        {questions.map((_, i) => {
-          const st = getStatus(i);
-          const { bg, color, border } = STATUS[st];
-          return (
+      {/* Q grid */}
+      <div className="q-grid-container">
+        <div className="q-grid-label">Questions</div>
+        <div className="q-grid">
+          {questions.map((_, i) => (
             <button
               key={i}
+              className={`q-num-btn ${STATUS_CLASS[getStatus(i)]}`}
               onClick={() => onNavigate(i)}
-              style={{ ...S.qBtn, background: bg, color, border: `1px solid ${border}` }}
-              title={`Question ${i + 1}`}
+              title={`Question ${i + 1} — ${getStatus(i)}`}
             >
               {i + 1}
             </button>
-          );
-        })}
+          ))}
+        </div>
       </div>
 
       {/* Submit */}
-      <button style={S.submitBtn} onClick={onSubmit}>
+      <button className="sidebar-submit" onClick={onSubmit}>
         Submit Quiz
       </button>
     </div>
   );
 }
-
-const S = {
-  sidebar: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 14,
-    position: 'sticky',
-    top: 76,
-  },
-  timerCard: {
-    background: 'var(--surface)',
-    border: '1px solid var(--border)',
-    borderRadius: '12px',
-    padding: '18px 14px',
-    textAlign: 'center',
-  },
-  legend: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: 6,
-  },
-  legendItem: {
-    fontSize: 11.5,
-    fontWeight: 600,
-    background: 'var(--surface)',
-    border: '1px solid var(--border)',
-    padding: '3px 9px',
-    borderRadius: 20,
-  },
-  grid: {
-    background: 'var(--surface)',
-    border: '1px solid var(--border)',
-    borderRadius: '12px',
-    padding: '14px',
-    display: 'grid',
-    gridTemplateColumns: 'repeat(5, 1fr)',
-    gap: 6,
-    maxHeight: '340px',
-    overflowY: 'auto',
-  },
-  qBtn: {
-    padding: '7px 4px',
-    borderRadius: '6px',
-    fontSize: 12,
-    fontWeight: 600,
-    cursor: 'pointer',
-    transition: 'all 0.12s',
-    textAlign: 'center',
-  },
-  submitBtn: {
-    width: '100%',
-    padding: '12px',
-    background: 'var(--accent)',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '9px',
-    fontSize: '14px',
-    fontWeight: '700',
-    cursor: 'pointer',
-    letterSpacing: '0.2px',
-  },
-};

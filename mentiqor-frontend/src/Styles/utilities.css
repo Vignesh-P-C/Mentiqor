@@ -1,0 +1,184 @@
+/*
+ * ─────────────────────────────────────────────────
+ *  MENTIQOR — Utilities
+ *  1. Animation helpers
+ *  2. Flex / Grid helpers
+ *  3. Spacing helpers
+ *  4. Text helpers
+ *  5. Color helpers
+ *  6. Responsive overrides
+ * ─────────────────────────────────────────────────
+ */
+
+/* ── 1. Animation helpers ── */
+
+.fade-up   { animation: fadeUp    var(--dur-slow) var(--ease-out) both; }
+.fade-in   { animation: fadeIn    var(--dur-base) var(--ease-out) both; }
+.scale-in  { animation: scaleIn   var(--dur-base) var(--ease-spring) both; }
+
+/* Stagger children */
+.stagger > *:nth-child(1)  { animation-delay: 0ms; }
+.stagger > *:nth-child(2)  { animation-delay: 60ms; }
+.stagger > *:nth-child(3)  { animation-delay: 120ms; }
+.stagger > *:nth-child(4)  { animation-delay: 180ms; }
+.stagger > *:nth-child(5)  { animation-delay: 240ms; }
+.stagger > *:nth-child(6)  { animation-delay: 300ms; }
+
+/* ── 2. Flex / Grid ── */
+
+.flex        { display: flex; }
+.flex-col    { display: flex; flex-direction: column; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-wrap   { flex-wrap: wrap; }
+.items-start { align-items: flex-start; }
+.items-center { align-items: center; }
+.items-end   { align-items: flex-end; }
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+.gap-8 { gap: var(--space-8); }
+.flex-1 { flex: 1; }
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+
+/* ── 3. Spacing ── */
+
+.mt-1 { margin-top: var(--space-1); }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-6 { margin-top: var(--space-6); }
+.mt-8 { margin-top: var(--space-8); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-8 { margin-bottom: var(--space-8); }
+.p-4 { padding: var(--space-4); }
+.p-6 { padding: var(--space-6); }
+.min-h-full { min-height: 100vh; }
+
+/* ── 4. Typography ── */
+
+.text-xs    { font-size: var(--text-xs); }
+.text-sm    { font-size: var(--text-sm); }
+.text-base  { font-size: var(--text-base); }
+.text-lg    { font-size: var(--text-lg); }
+.text-xl    { font-size: var(--text-xl); }
+.text-2xl   { font-size: var(--text-2xl); }
+.text-3xl   { font-size: var(--text-3xl); }
+
+.font-normal  { font-weight: 400; }
+.font-medium  { font-weight: 500; }
+.font-semi    { font-weight: 600; }
+.font-bold    { font-weight: 700; }
+.font-black   { font-weight: 800; }
+
+.font-display { font-family: var(--font-display); }
+.font-mono    { font-family: var(--font-mono); }
+
+.uppercase    { text-transform: uppercase; letter-spacing: 0.06em; }
+.text-center  { text-align: center; }
+.text-right   { text-align: right; }
+.leading-tight { line-height: 1.25; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.whitespace-nowrap { white-space: nowrap; }
+
+/* ── 5. Color helpers ── */
+
+.text-primary  { color: var(--text); }
+.text-2        { color: var(--text-2); }
+.text-muted    { color: var(--text-muted); }
+.text-accent   { color: var(--accent); }
+.text-accent-2 { color: var(--accent-2); }
+.text-success  { color: var(--status-answered); }
+.text-error    { color: var(--status-unanswered); }
+.text-warning  { color: var(--amber-400); }
+.text-marked   { color: var(--status-marked); }
+
+.bg-surface  { background: var(--surface); }
+.bg-surface2 { background: var(--surface-2); }
+.border-base { border: 1px solid var(--border); }
+
+/* Gradient text */
+.text-gradient {
+  color: transparent;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ── 6. Responsive overrides ── */
+
+@media (max-width: 1024px) {
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .charts-row {
+    grid-template-columns: 1fr;
+  }
+
+  .quiz-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .quiz-sidebar {
+    position: static;
+    /* Convert sidebar to horizontal layout on tablet */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .q-grid-container { grid-column: 1 / -1; }
+  .sidebar-submit   { grid-column: 1 / -1; }
+}
+
+@media (max-width: 768px) {
+  .navbar { padding: 0 var(--space-4); }
+
+  .main-content {
+    padding: var(--space-5) var(--space-4) var(--space-12);
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .results-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .quiz-sidebar {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .quiz-nav {
+    gap: var(--space-2);
+  }
+
+  .user-email  { display: none; }
+  .nav-btn { padding: 6px 12px; }
+
+  .auth-page { grid-template-columns: 1fr; }
+  .auth-left  { display: none; }
+  .auth-right { padding: var(--space-8) var(--space-5); }
+
+  h1 { font-size: var(--text-3xl); }
+  h2 { font-size: var(--text-2xl); }
+  .dashboard-title { font-size: var(--text-3xl); }
+  .quiz-setup__title { font-size: var(--text-2xl); }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .results-stats { gap: var(--space-2); }
+  .results-stat-chip { min-width: 58px; padding: var(--space-2) var(--space-3); }
+  .modal { padding: var(--space-6); }
+}
