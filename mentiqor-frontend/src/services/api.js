@@ -35,3 +35,6 @@ export const saveSession = (payload) =>
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   }).then(ok);
+
+export const fetchQuote = () =>
+  fetch(`${BASE}/quote`).then(ok);

@@ -475,7 +475,7 @@ const SC = {
     padding: '32px',
   },
   setupHeader: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 },
-  title: { fontFamily: "'Syne', sans-serif", fontSize: 20, fontWeight: 700, color: 'var(--text)' },
+  title: { fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: 'var(--text)' },
   badge: {
     fontSize: 12, color: 'var(--text-muted)',
     background: 'var(--surface-2)', border: '1px solid var(--border-2)',

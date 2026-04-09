@@ -1,3 +1,4 @@
+import MotivationQuote from '../components/MotivationQuote';
 import { useEffect, useState } from 'react';
 import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
@@ -6,14 +7,14 @@ import {
 import { fetchStats, fetchWeakTopics, fetchSessions } from '../services/api';
 
 // Chart colors — hardcoded to work with both themes
-const COLORS = { success: '#10b981', error: '#f43f5e', warning: '#f59e0b', accent: '#5b5ef4', accent2: '#818cf8', muted: '#6b6b8a' };
+const COLORS = { success: '#10b981', error: '#f43f5e', warning: '#f59e0b', accent: '#a86a3a', accent2: '#c4875a', muted: '#7a6e64' };
 const PIE_COLORS = [COLORS.success, COLORS.error, COLORS.warning, COLORS.muted];
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div style={{ background: '#0e0e1c', border: '1px solid #1e1e38', borderRadius: 8, padding: '9px 13px', fontSize: 12 }}>
-      {label && <div style={{ color: '#6b6b8a', marginBottom: 4 }}>{label}</div>}
+    <div style={{ background: 'var(--surface-2)', border: '1px solid var(--border-2)', borderRadius: 8, padding: '9px 13px', fontSize: 12 }}>
+      {label && <div style={{ color: 'var(--text-muted)', marginBottom: 4 }}>{label}</div>}
       {payload.map((p, i) => (
         <div key={i} style={{ color: p.color || '#e2e2f5' }}>
           {p.name}: <strong>{p.value}</strong>
@@ -94,6 +95,9 @@ export default function Dashboard({ userId, onNavigate }) {
         </div>
         <button style={S.practiceBtn} onClick={() => onNavigate('quiz')}>Practice →</button>
       </div>
+
+      {/* ✨ Motivational Quote */}
+      <MotivationQuote />
 
       {/* KPI cards */}
       <div style={S.kpiGrid}>
@@ -276,13 +280,13 @@ const S = {
     display: 'flex', alignItems: 'flex-start',
     justifyContent: 'space-between', marginBottom: 24, flexWrap: 'wrap', gap: 12,
   },
-  pageTitle: { fontFamily: "'Syne', sans-serif", fontSize: 22, fontWeight: 800, color: 'var(--text)', marginBottom: 4 },
+  pageTitle: { fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text)', marginBottom: 4 },
   pageSub:   { fontSize: 13, color: 'var(--text-muted)' },
   practiceBtn: {
     padding: '9px 20px',
     background: 'var(--accent-bg)',
-    color: 'var(--accent-2)',
-    border: '1px solid rgba(91,94,244,0.3)',
+    color: 'var(--accent)',
+    border: '1px solid var(--border-accent)',
     borderRadius: '8px',
     fontSize: 13.5,
     fontWeight: 600,
@@ -329,7 +333,7 @@ const S = {
     marginBottom: 14,
   },
   chartHeader: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 },
-  chartTitle:  { fontFamily: "'Syne', sans-serif", fontSize: 14.5, fontWeight: 700, color: 'var(--text)' },
+  chartTitle:  { fontFamily: 'var(--font-display)', fontSize: 14.5, fontWeight: 700, color: 'var(--text)' },
   chartSub:    { fontSize: 11.5, color: 'var(--text-muted)' },
   allGood: {
     textAlign: 'center', padding: '16px',

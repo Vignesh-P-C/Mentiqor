@@ -17,15 +17,19 @@
 }
 
 .brand {
-  font-family: 'Syne', sans-serif;
-  font-size: 17px;
+  font-family: var(--font-display);
+  font-size: clamp(32px, 6vw, 32px);  /* ← make this bigger */
   font-weight: 800;
-  color: var(--accent-2);
   letter-spacing: -0.2px;
   display: flex;
   align-items: center;
   gap: 7px;
   white-space: nowrap;
+  /* Remove the solid color and use gradient instead */
+  color: transparent;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 .brand-dot {
   width: 7px;
@@ -135,7 +139,7 @@
   box-shadow: var(--shadow);
 }
 .modal h3 {
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-display);
   font-size: 17px;
   font-weight: 700;
   color: var(--text);

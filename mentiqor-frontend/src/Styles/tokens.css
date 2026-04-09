@@ -2,8 +2,8 @@
  * ─────────────────────────────────────────────────
  *  MENTIQOR — Design Tokens
  *  1. Color Scales
- *  2. Semantic Tokens (dark)
- *  3. Semantic Tokens (light)
+ *  2. Dark Theme  — light brown · grey · black
+ *  3. Light Theme — dark brown · cream · white
  *  4. Spacing Scale
  *  5. Type Scale
  *  6. Radius Scale
@@ -14,54 +14,55 @@
 
 /* ── 1. Raw Color Scales ── */
 :root {
-  /* Blues */
-  --blue-50:  #eff6ff;
-  --blue-100: #dbeafe;
-  --blue-200: #bfdbfe;
-  --blue-300: #93c5fd;
-  --blue-400: #60a5fa;
-  --blue-500: #3b82f6;
-  --blue-600: #2563eb;
-  --blue-700: #1d4ed8;
-  --blue-800: #1e40af;
-  --blue-900: #1e3a8a;
+  /* Brown scale */
+  --brown-50:  #fdf8f3;
+  --brown-100: #f5ead9;
+  --brown-200: #e8d0b0;
+  --brown-300: #d4b08a;
+  --brown-400: #c4875a;
+  --brown-500: #a86a3a;
+  --brown-600: #7c3a14;
+  --brown-700: #5c2a0e;
+  --brown-800: #3d1c0a;
+  --brown-900: #1a0e06;
 
-  /* Indigo / Purple */
-  --indigo-400: #818cf8;
-  --indigo-500: #6366f1;
-  --indigo-600: #4f46e5;
-  --purple-400: #a78bfa;
-  --purple-500: #8b5cf6;
-  --purple-600: #7c3aed;
+  /* Cream scale */
+  --cream-50:  #fdfaf5;
+  --cream-100: #f5f0e6;
+  --cream-200: #ede5d4;
+  --cream-300: #e0d4be;
+  --cream-400: #c8b99a;
+  --cream-500: #a89878;
+  --cream-600: #8a7a5e;
+  --cream-700: #6b5e48;
+  --cream-800: #4a3e30;
+  --cream-900: #2a221a;
 
-  /* Status */
+  /* Grey scale */
+  --grey-50:  #f9f9f9;
+  --grey-100: #ececec;
+  --grey-200: #d4d4d4;
+  --grey-300: #b0b0b0;
+  --grey-400: #8a8a8a;
+  --grey-500: #6a6a6a;
+  --grey-600: #4e4e4e;
+  --grey-700: #383838;
+  --grey-800: #242424;
+  --grey-900: #141414;
+
+  --warmgrey-500: #7a6e64;
+
+  /* Status — functional */
   --green-400:  #34d399;
   --green-500:  #10b981;
-  --green-900:  #064e3b;
   --red-400:    #f87171;
   --red-500:    #ef4444;
-  --red-900:    #7f1d1d;
   --amber-400:  #fbbf24;
   --amber-500:  #f59e0b;
-  --amber-900:  #78350f;
   --violet-400: #c084fc;
   --violet-500: #a855f7;
-  --violet-900: #4c1d95;
 
-  /* Neutrals */
-  --slate-50:  #f8fafc;
-  --slate-100: #f1f5f9;
-  --slate-200: #e2e8f0;
-  --slate-300: #cbd5e1;
-  --slate-400: #94a3b8;
-  --slate-500: #64748b;
-  --slate-600: #475569;
-  --slate-700: #334155;
-  --slate-800: #1e293b;
-  --slate-900: #0f172a;
-  --slate-950: #020617;
-
-  /* ── 4. Spacing Scale ── */
+  /* ── 4. Spacing ── */
   --space-1:  4px;
   --space-2:  8px;
   --space-3:  12px;
@@ -85,25 +86,23 @@
   --text-4xl:  36px;
 
   --font-body:    'DM Sans', system-ui, sans-serif;
-  --font-display: 'Barlow Condensed', system-ui, sans-serif;
+  --font-display: 'Cormorant Garamond', 'Georgia', serif;
   --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
 
-  /* ── 6. Radius Scale ── */
-  --radius-sm:  6px;
-  --radius-md:  10px;
-  --radius-lg:  14px;
-  --radius-xl:  20px;
-  --radius-2xl: 28px;
+  /* ── 6. Radius ── */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   20px;
+  --radius-2xl:  28px;
   --radius-full: 999px;
 
-  /* ── 7. Shadow Scale ── */
-  --shadow-xs:  0 1px 3px rgba(0,0,0,0.12);
-  --shadow-sm:  0 2px 8px rgba(0,0,0,0.18);
-  --shadow-md:  0 4px 20px rgba(0,0,0,0.26);
-  --shadow-lg:  0 8px 40px rgba(0,0,0,0.36);
-  --shadow-xl:  0 16px 64px rgba(0,0,0,0.48);
-  --shadow-glow-blue:   0 0 20px rgba(59,130,246,0.35);
-  --shadow-glow-indigo: 0 0 20px rgba(99,102,241,0.35);
+  /* ── 7. Shadows ── */
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.14);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.20);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.28);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.38);
+  --shadow-xl: 0 16px 64px rgba(0,0,0,0.50);
 
   /* ── 8. Motion ── */
   --ease-snap:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -114,106 +113,135 @@
   --dur-slow:    320ms;
 }
 
-/* ── 2. Dark Theme (default) ── */
+/* ─────────────────────────────────────────────────
+   2. DARK THEME — light brown · grey · black
+───────────────────────────────────────────────── */
 :root,
 [data-theme="dark"] {
   color-scheme: dark;
 
-  /* Backgrounds */
-  --bg:        #07091a;
-  --bg-mesh:   radial-gradient(ellipse 80% 60% at 20% 0%,  rgba(59,130,246,0.07) 0%, transparent 60%),
-               radial-gradient(ellipse 60% 50% at 80% 100%, rgba(99,102,241,0.06) 0%, transparent 55%),
-               #07091a;
+  /* Backgrounds — true black */
+  --bg:      #0a0a08;
+  --bg-mesh: linear-gradient(160deg, rgba(196,135,90,0.05) 0%, transparent 50%), #0a0a08;
 
-  /* Surfaces */
-  --surface:   #0d1426;
-  --surface-2: #111c38;
-  --surface-3: #162040;
-  --glass:     rgba(13,20,38,0.75);
-  --glass-border: rgba(255,255,255,0.06);
+  /* Surfaces — dark grey steps */
+  --surface:      #111110;
+  --surface-2:    #1a1918;
+  --surface-3:    #222120;
+  --glass:        rgba(17,17,16,0.85);
+  --glass-border: rgba(255,255,255,0.04);
 
   /* Borders */
-  --border:    rgba(255,255,255,0.07);
-  --border-2:  rgba(255,255,255,0.11);
-  --border-accent: rgba(59,130,246,0.35);
+  --border:        rgba(255,255,255,0.08);
+  --border-2:      rgba(255,255,255,0.13);
+  --border-accent: rgba(196,135,90,0.28);
 
-  /* Accent */
-  --accent:    var(--blue-500);
-  --accent-2:  var(--indigo-400);
-  --accent-3:  var(--purple-400);
-  --accent-bg: rgba(59,130,246,0.10);
-  --accent-bg-2: rgba(99,102,241,0.10);
-  --gradient-accent: linear-gradient(135deg, var(--blue-500) 0%, var(--indigo-500) 100%);
-  --gradient-accent-soft: linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(99,102,241,0.15) 100%);
+  /* Accent — light brown */
+  --accent:                var(--brown-400);
+  --accent-2:              #d4a07c;
+  --accent-3:              #e2b898;
+  --accent-muted:          var(--brown-500);
+  --accent-bg:             rgba(196,135,90,0.10);
+  --accent-bg-2:           rgba(212,160,124,0.08);
+  --accent-glow:           rgba(196,135,90,0.22);
+  --gradient-accent:       linear-gradient(135deg, var(--brown-400) 0%, #d4a07c 100%);
+  --gradient-accent-soft:  linear-gradient(135deg, rgba(196,135,90,0.10) 0%, rgba(212,160,124,0.06) 100%);
 
-  /* Text */
-  --text:       #e8eaf6;
-  --text-2:     #a0aec8;
-  --text-muted: #5a6a88;
-  --text-dim:   #2a3450;
+  /* Text — grey, barely warm */
+  --text:       #d8d2cc;
+  --text-2:     #8a8480;
+  --text-muted: #585350;
+  --text-dim:   #252220;
 
-  /* Status — quiz navigation */
-  --status-answered:     var(--green-500);
-  --status-answered-bg:  rgba(16,185,129,0.15);
-  --status-marked:       var(--violet-500);
-  --status-marked-bg:    rgba(168,85,247,0.15);
-  --status-not-visited:  var(--slate-500);
-  --status-not-visited-bg: rgba(100,116,139,0.10);
-  --status-unanswered:   var(--red-500);
-  --status-unanswered-bg: rgba(239,68,68,0.15);
-  --status-current:      var(--blue-500);
-  --status-current-bg:   rgba(59,130,246,0.20);
+  /* Semantic */
+  --success:    var(--green-500);
+  --success-bg: rgba(16,185,129,0.10);
+  --error:      var(--red-400);
+  --error-bg:   rgba(248,113,113,0.09);
+  --warning:    var(--amber-400);
+  --warning-bg: rgba(251,191,36,0.09);
+
+  /* Quiz status */
+  --status-answered:       var(--green-500);
+  --status-answered-bg:    rgba(16,185,129,0.12);
+  --status-marked:         var(--violet-400);
+  --status-marked-bg:      rgba(192,132,252,0.10);
+  --status-not-visited:    var(--grey-500);
+  --status-not-visited-bg: rgba(106,106,106,0.10);
+  --status-unanswered:     var(--red-400);
+  --status-unanswered-bg:  rgba(248,113,113,0.10);
+  --status-current:        var(--brown-400);
+  --status-current-bg:     rgba(196,135,90,0.14);
 
   /* Shadows */
-  --shadow-card:  0 2px 12px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
-  --shadow-raise: 0 4px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.07);
-  --shadow-float: 0 8px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+  --shadow-card:  0 2px 12px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04);
+  --shadow-raise: 0 4px 24px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.05);
+  --shadow-float: 0 8px 40px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.05);
+  --shadow: var(--shadow-raise);
 }
 
-/* ── 3. Light Theme ── */
+/* ─────────────────────────────────────────────────
+   3. LIGHT THEME — dark brown · cream · white
+───────────────────────────────────────────────── */
 [data-theme="light"] {
   color-scheme: light;
 
-  --bg:      #eef2ff;
-  --bg-mesh: radial-gradient(ellipse 80% 60% at 20% 0%,  rgba(99,102,241,0.08) 0%, transparent 60%),
-             radial-gradient(ellipse 60% 50% at 80% 100%, rgba(59,130,246,0.06) 0%, transparent 55%),
-             #eef2ff;
+  /* Backgrounds — cream */
+  --bg:      var(--cream-100);
+  --bg-mesh: linear-gradient(160deg, rgba(92,42,14,0.05) 0%, transparent 50%), var(--cream-100);
 
-  --surface:   #ffffff;
-  --surface-2: #f5f7ff;
-  --surface-3: #eceffe;
-  --glass:     rgba(255,255,255,0.80);
-  --glass-border: rgba(255,255,255,0.90);
+  /* Surfaces — white + cream steps */
+  --surface:      #ffffff;
+  --surface-2:    var(--cream-200);
+  --surface-3:    var(--cream-300);
+  --glass:        rgba(255,255,255,0.88);
+  --glass-border: rgba(255,255,255,0.98);
 
-  --border:    rgba(99,102,241,0.12);
-  --border-2:  rgba(99,102,241,0.20);
-  --border-accent: rgba(59,130,246,0.40);
+  /* Borders — brown-tinted */
+  --border:        rgba(90,50,20,0.12);
+  --border-2:      rgba(90,50,20,0.20);
+  --border-accent: rgba(90,50,20,0.32);
 
-  --accent:    var(--indigo-600);
-  --accent-2:  var(--blue-600);
-  --accent-3:  var(--purple-600);
-  --accent-bg: rgba(99,102,241,0.08);
-  --accent-bg-2: rgba(59,130,246,0.08);
-  --gradient-accent: linear-gradient(135deg, var(--indigo-600) 0%, var(--blue-600) 100%);
-  --gradient-accent-soft: linear-gradient(135deg, rgba(99,102,241,0.10) 0%, rgba(59,130,246,0.10) 100%);
+  /* Accent — dark brown */
+  --accent:                var(--brown-700);
+  --accent-2:              var(--brown-600);
+  --accent-3:              var(--brown-500);
+  --accent-muted:          var(--brown-600);
+  --accent-bg:             rgba(92,42,14,0.07);
+  --accent-bg-2:           rgba(124,58,20,0.06);
+  --accent-glow:           rgba(92,42,14,0.16);
+  --gradient-accent:       linear-gradient(135deg, var(--brown-700) 0%, var(--brown-500) 100%);
+  --gradient-accent-soft:  linear-gradient(135deg, rgba(92,42,14,0.08) 0%, rgba(124,58,20,0.05) 100%);
 
-  --text:       #0f172a;
-  --text-2:     #334155;
-  --text-muted: #64748b;
-  --text-dim:   #cbd5e1;
+  /* Text — dark brown scale */
+  --text:       var(--brown-900);
+  --text-2:     var(--brown-700);
+  --text-muted: var(--cream-700);
+  --text-dim:   var(--cream-300);
 
-  --status-answered:     #059669;
-  --status-answered-bg:  rgba(5,150,105,0.10);
-  --status-marked:       #7c3aed;
-  --status-marked-bg:    rgba(124,58,237,0.10);
-  --status-not-visited:  var(--slate-400);
-  --status-not-visited-bg: rgba(100,116,139,0.08);
-  --status-unanswered:   #dc2626;
-  --status-unanswered-bg: rgba(220,38,38,0.10);
-  --status-current:      var(--indigo-600);
-  --status-current-bg:   rgba(99,102,241,0.12);
+  /* Semantic */
+  --success:    #059669;
+  --success-bg: rgba(5,150,105,0.08);
+  --error:      #b91c1c;
+  --error-bg:   rgba(185,28,28,0.07);
+  --warning:    #b45309;
+  --warning-bg: rgba(180,83,9,0.07);
 
-  --shadow-card:  0 1px 6px rgba(99,102,241,0.08), 0 0 0 1px rgba(99,102,241,0.10);
-  --shadow-raise: 0 4px 20px rgba(99,102,241,0.14), 0 0 0 1px rgba(99,102,241,0.12);
-  --shadow-float: 0 8px 36px rgba(99,102,241,0.18), 0 0 0 1px rgba(99,102,241,0.14);
+  /* Quiz status */
+  --status-answered:       #059669;
+  --status-answered-bg:    rgba(5,150,105,0.08);
+  --status-marked:         #6d28d9;
+  --status-marked-bg:      rgba(109,40,217,0.08);
+  --status-not-visited:    var(--cream-600);
+  --status-not-visited-bg: rgba(138,122,94,0.08);
+  --status-unanswered:     #b91c1c;
+  --status-unanswered-bg:  rgba(185,28,28,0.08);
+  --status-current:        var(--brown-700);
+  --status-current-bg:     rgba(92,42,14,0.09);
+
+  /* Shadows */
+  --shadow-card:  0 1px 6px rgba(60,30,10,0.09), 0 0 0 1px rgba(60,30,10,0.07);
+  --shadow-raise: 0 4px 20px rgba(60,30,10,0.13), 0 0 0 1px rgba(60,30,10,0.09);
+  --shadow-float: 0 8px 36px rgba(60,30,10,0.17), 0 0 0 1px rgba(60,30,10,0.11);
+  --shadow: var(--shadow-raise);
 }

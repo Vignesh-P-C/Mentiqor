@@ -157,5 +157,17 @@ app.post('/session', async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// ── Motivation Quote (proxy → zenquotes.io) ───────────────────
+app.get('/quote', async (req, res) => {
+  try {
+    const response = await fetch('https://zenquotes.io/api/random');
+    const data = await response.json();
+    if (!data || !data[0]) throw new Error('Empty response from quote API');
+    res.json({ quote: data[0].q, author: data[0].a });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

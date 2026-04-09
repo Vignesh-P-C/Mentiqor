@@ -91,7 +91,7 @@ const S = {
   },
   explText: {
     fontSize: 13.5,
-    color: "#a1a1b5",
+    color: "var(--text-2)",
     lineHeight: 1.65,
   },
   nextBtn: {
