@@ -33,7 +33,57 @@ app.get('/questions', async (req, res) => {
     res.json(r.rows);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
+// ── Completions (mark as done) ───────────────────────────────
+// GET /completions/:user_id?type=pyq|video
+app.get('/completions/:user_id', async (req, res) => {
+  const { user_id } = req.params;
+  const { type }    = req.query;
 
+  if (!type || !['pyq', 'video'].includes(type))
+    return res.status(400).json({ error: 'Query param ?type= must be "pyq" or "video".' });
+
+  try {
+    const r = await pool.query(
+      `SELECT item_identifier FROM user_completions
+       WHERE user_id = $1 AND completion_type = $2`,
+      [user_id, type]
+    );
+    res.json({ completions: r.rows.map(row => row.item_identifier) });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /completion
+app.post('/completion', async (req, res) => {
+  const { user_id, completion_type, item_identifier, completed } = req.body;
+
+  if (!user_id || !completion_type || !item_identifier || completed === undefined)
+    return res.status(400).json({ error: 'user_id, completion_type, item_identifier, and completed are required.' });
+
+  if (!['pyq', 'video'].includes(completion_type))
+    return res.status(400).json({ error: 'completion_type must be "pyq" or "video".' });
+
+  try {
+    if (completed) {
+      await pool.query(
+        `INSERT INTO user_completions (user_id, completion_type, item_identifier)
+         VALUES ($1, $2, $3)
+         ON CONFLICT (user_id, completion_type, item_identifier) DO NOTHING`,
+        [user_id, completion_type, item_identifier]
+      );
+    } else {
+      await pool.query(
+        `DELETE FROM user_completions
+         WHERE user_id = $1 AND completion_type = $2 AND item_identifier = $3`,
+        [user_id, completion_type, item_identifier]
+      );
+    }
+    res.json({ success: true, completed });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 // ── Attempt ───────────────────────────────────────────────────
 app.post('/attempt', async (req, res) => {
   const { user_id, question_id, selected } = req.body;
