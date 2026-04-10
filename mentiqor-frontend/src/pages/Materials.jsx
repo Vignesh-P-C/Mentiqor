@@ -15,21 +15,42 @@ const pdf = (year, date, shift, slug) => ({
   pdfUrl: `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${year}/${slug}_shift${shift}.pdf`,
 });
 
+const shifts = (year, date, slug, numShifts = 2) => {
+  const result = [];
+  for (let i = 1; i <= numShifts; i++) {
+    result.push(pdf(year, date, i, slug));
+  }
+  return result;
+};
+
 const PYQ_PAPERS = [
-  pdf('2024','Jan 27', 1, 'jan27'), pdf('2024','Jan 27', 2, 'jan27'),
-  pdf('2024','Jan 29', 1, 'jan29'), pdf('2024','Jan 29', 2, 'jan29'),
-  pdf('2024','Jan 30', 1, 'jan30'), pdf('2024','Jan 30', 2, 'jan30'),
-  pdf('2024','Jan 31', 1, 'jan31'), pdf('2024','Jan 31', 2, 'jan31'),
-  pdf('2024','Feb 1',  1, 'feb1'),  pdf('2024','Feb 1',  2, 'feb1'),
-  pdf('2024','Apr 4',  1, 'apr4'),  pdf('2024','Apr 4',  2, 'apr4'),
-  pdf('2024','Apr 8',  1, 'apr8'),  pdf('2024','Apr 8',  2, 'apr8'),
-  pdf('2023','Jan 24', 1, 'jan24'), pdf('2023','Jan 24', 2, 'jan24'),
-  pdf('2023','Jan 25', 1, 'jan25'), pdf('2023','Jan 25', 2, 'jan25'),
-  pdf('2023','Apr 6',  1, 'apr6'),  pdf('2023','Apr 6',  2, 'apr6'),
-  pdf('2023','Apr 13', 1, 'apr13'), pdf('2023','Apr 13', 2, 'apr13'),
-  pdf('2022','Jun 24', 1, 'jun24'), pdf('2022','Jun 24', 2, 'jun24'),
-  pdf('2022','Jun 25', 1, 'jun25'), pdf('2022','Jun 25', 2, 'jun25'),
-  pdf('2022','Jul 25', 1, 'jul25'), pdf('2022','Jul 25', 2, 'jul25'),
+  // ===== 2025 =====
+  ...shifts('2025', 'Jan 22', 'jan22'),
+  ...shifts('2025', 'Jan 23', 'jan23'),
+  ...shifts('2025', 'Jan 24', 'jan24'),
+  ...shifts('2025', 'Jan 28', 'jan28'),
+  ...shifts('2025', 'Jan 29', 'jan29'),
+  // Add more 2025 dates here as you upload PDFs
+
+  // ===== 2024 =====
+  ...shifts('2024', 'Jan 27', 'jan27'),
+  ...shifts('2024', 'Jan 29', 'jan29'),
+  ...shifts('2024', 'Jan 30', 'jan30'),
+  ...shifts('2024', 'Jan 31', 'jan31'),
+  ...shifts('2024', 'Feb 1', 'feb1'),
+  ...shifts('2024', 'Apr 4', 'apr4'),
+  ...shifts('2024', 'Apr 8', 'apr8'),
+
+  // ===== 2023 =====
+  ...shifts('2023', 'Jan 24', 'jan24'),
+  ...shifts('2023', 'Jan 25', 'jan25'),
+  ...shifts('2023', 'Apr 6', 'apr6'),
+  ...shifts('2023', 'Apr 13', 'apr13'),
+
+  // ===== 2022 =====
+  ...shifts('2022', 'Jun 24', 'jun24'),
+  ...shifts('2022', 'Jun 25', 'jun25'),
+  ...shifts('2022', 'Jul 25', 'jul25'),
 ];
 
 const PYQ_YEARS = [...new Set(PYQ_PAPERS.map(p => p.year))].sort((a,b) => b - a);
