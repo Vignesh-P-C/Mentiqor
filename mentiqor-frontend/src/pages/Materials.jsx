@@ -59,58 +59,83 @@ const PYQ_YEARS = [...new Set(PYQ_PAPERS.map(p => p.year))].sort((a,b) => b - a)
 //  STATIC DATA — Video Playlists
 // ─────────────────────────────────────────────────
 const PLAYLISTS = [
-  // Mathematics
-  { subject: 'Mathematics', topic: 'Limits, Continuity & Differentiability', videoUrl: '' },
-  { subject: 'Mathematics', topic: 'Integration & Differential Equations',   videoUrl: '' },
-  { subject: 'Mathematics', topic: 'Coordinate Geometry',                    videoUrl: 'https://www.youtube.com/playlist?list=PLu0W_9lII9agICnT8t4iYVSZ3eykIAOME' },
-  { subject: 'Mathematics', topic: 'Vectors & 3D Geometry',                  videoUrl: '' },
-  { subject: 'Mathematics', topic: 'Probability & Statistics',               videoUrl: '' },
-  { subject: 'Mathematics', topic: 'Complex Numbers & Quadratic Equations',  videoUrl: '' },
-  { subject: 'Mathematics', topic: 'Matrices & Determinants',                videoUrl: '' },
-  { subject: 'Mathematics', topic: 'Trigonometry',                           videoUrl: '' },
-  // Physics
-  { subject: 'Physics', topic: 'Mechanics — Laws of Motion',     videoUrl: '' },
-  { subject: 'Physics', topic: 'Work, Energy & Power',           videoUrl: '' },
-  { subject: 'Physics', topic: 'Rotational Motion',              videoUrl: '' },
-  { subject: 'Physics', topic: 'Electrostatics',                 videoUrl: 'https://www.youtube.com/playlist?list=PLF_7kfnwLFCF7NBFr1QVGBIVXbRKGV3UG' },
-  { subject: 'Physics', topic: 'Current Electricity',            videoUrl: '' },
-  { subject: 'Physics', topic: 'Magnetic Effects of Current',    videoUrl: '' },
-  { subject: 'Physics', topic: 'Optics',                         videoUrl: '' },
-  { subject: 'Physics', topic: 'Modern Physics & Dual Nature',   videoUrl: '' },
-  { subject: 'Physics', topic: 'Waves & Thermodynamics',         videoUrl: '' },
-  // Chemistry
-  { subject: 'Chemistry', topic: 'Chemical Bonding & Molecular Structure', videoUrl: '' },
-  { subject: 'Chemistry', topic: 'Equilibrium',                            videoUrl: '' },
-  { subject: 'Chemistry', topic: 'Electrochemistry',                       videoUrl: '' },
-  { subject: 'Chemistry', topic: 'Coordination Compounds',                 videoUrl: 'https://www.youtube.com/playlist?list=PLpIJq64f7kxWBZiqLlJYy0r8RTa_TBmLm' },
-  { subject: 'Chemistry', topic: 'Organic Chemistry — GOC & Hydrocarbons', videoUrl: '' },
-  { subject: 'Chemistry', topic: 'Aldehydes, Ketones & Carboxylic Acids',  videoUrl: '' },
-  { subject: 'Chemistry', topic: 'Biomolecules & Polymers',                videoUrl: '' },
-  { subject: 'Chemistry', topic: 'p-Block & d-Block Elements',             videoUrl: '' },
+  // ========== MATHEMATICS ==========
+  { subject: 'Mathematics', topic: 'Sets, Relations and Functions', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Complex Numbers and Quadratic Equations', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Matrices and Determinants', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Permutations and Combinations', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Binomial Theorem', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Sequences and Series', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Limits, Continuity and Differentiability', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Integral Calculus', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Differential Equations', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Coordinate Geometry', detailedUrl: 'https://www.youtube.com/playlist?list=PLu0W_9lII9agICnT8t4iYVSZ3eykIAOME', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Vector Algebra', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Three Dimensional Geometry', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Statistics and Probability', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Trigonometry', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Mathematical Reasoning', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Linear Programming', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Inverse Trigonometric Functions', detailedUrl: '', shortUrl: '' },
+  { subject: 'Mathematics', topic: 'Application of Derivatives', detailedUrl: '', shortUrl: '' },
+
+  // ========== PHYSICS ==========
+  { subject: 'Physics', topic: 'Physics and Measurement', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Kinematics', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Laws of Motion', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Work, Energy and Power', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Rotational Motion', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Gravitation', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Properties of Solids and Liquids', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Thermodynamics', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Kinetic Theory of Gases', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Oscillations and Waves', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Electrostatics', detailedUrl: 'https://www.youtube.com/playlist?list=PLF_7kfnwLFCF7NBFr1QVGBIVXbRKGV3UG', shortUrl: '' },
+  { subject: 'Physics', topic: 'Current Electricity', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Magnetic Effects of Current and Magnetism', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Electromagnetic Induction and Alternating Currents', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Electromagnetic Waves', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Optics', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Dual Nature of Matter and Radiation', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Atoms and Nuclei', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Electronic Devices', detailedUrl: '', shortUrl: '' },
+  { subject: 'Physics', topic: 'Communication Systems', detailedUrl: '', shortUrl: '' },
+
+  // ========== CHEMISTRY ==========
+  // Physical Chemistry
+  { subject: 'Chemistry', topic: 'Some Basic Concepts of Chemistry', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Atomic Structure', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Chemical Bonding and Molecular Structure', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'States of Matter (Gases & Liquids)', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Thermodynamics', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Equilibrium', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Redox Reactions and Electrochemistry', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Chemical Kinetics', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Surface Chemistry', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Solutions', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Solid State', detailedUrl: '', shortUrl: '' },
+  // Inorganic Chemistry
+  { subject: 'Chemistry', topic: 'Classification of Elements and Periodicity', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Hydrogen', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 's-Block Elements', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'p-Block Elements', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'd and f Block Elements', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Coordination Compounds', detailedUrl: 'https://www.youtube.com/playlist?list=PLpIJq64f7kxWBZiqLlJYy0r8RTa_TBmLm', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Environmental Chemistry', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Qualitative Analysis', detailedUrl: '', shortUrl: '' },
+  // Organic Chemistry
+  { subject: 'Chemistry', topic: 'Basic Principles (IUPAC, Isomerism, GOC)', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Hydrocarbons', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Haloalkanes and Haloarenes', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Alcohols, Phenols and Ethers', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Aldehydes, Ketones and Carboxylic Acids', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Amines', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Biomolecules and Polymers', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Chemistry in Everyday Life', detailedUrl: '', shortUrl: '' },
+  { subject: 'Chemistry', topic: 'Practical Organic Chemistry', detailedUrl: '', shortUrl: '' },
 ];
 
 const SUBJECTS = ['Mathematics', 'Physics', 'Chemistry'];
-
-// ─────────────────────────────────────────────────
-//  YOUTUBE FALLBACK
-// ─────────────────────────────────────────────────
-async function searchYouTubePlaylist(topic) {
-  if (!YT_KEY) {
-    // No API key — fall back to a search URL
-    const q = encodeURIComponent(`${topic} JEE Mains playlist`);
-    return `https://www.youtube.com/results?search_query=${q}`;
-  }
-  const q   = encodeURIComponent(`${topic} JEE Mains playlist`);
-  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${q}&type=video&key=${YT_KEY}`;
-  try {
-    const res  = await fetch(url);
-    const data = await res.json();
-    const id   = data?.items?.[0]?.id?.videoId;
-    return id ? `https://www.youtube.com/watch?v=${id}` : `https://www.youtube.com/results?search_query=${q}`;
-  } catch {
-    return `https://www.youtube.com/results?search_query=${q}`;
-  }
-}
 
 // ─────────────────────────────────────────────────
 //  SHIFT BADGE COLOR
@@ -146,13 +171,39 @@ export default function Materials() {
   });
 
   // ── Watch handler ──
-  const handleWatch = useCallback(async (v) => {
-    if (v.videoUrl) { window.open(v.videoUrl, '_blank'); return; }
-    setLoadingVids(prev => ({ ...prev, [v.topic]: true }));
-    const url = await searchYouTubePlaylist(v.topic);
-    setLoadingVids(prev => ({ ...prev, [v.topic]: false }));
-    window.open(url, '_blank');
-  }, []);
+const searchYouTube = async (topic, type) => {
+  const searchTerm = type === 'detailed' 
+    ? `${topic} JEE Mains one shot full chapter`
+    : `${topic} JEE Mains revision 10 minutes`;
+  
+  if (!YT_KEY) {
+    const q = encodeURIComponent(searchTerm);
+    return `https://www.youtube.com/results?search_query=${q}`;
+  }
+  const q = encodeURIComponent(searchTerm);
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${q}&type=video&key=${YT_KEY}`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    const id = data?.items?.[0]?.id?.videoId;
+    return id ? `https://www.youtube.com/watch?v=${id}` : `https://www.youtube.com/results?search_query=${q}`;
+  } catch {
+    return `https://www.youtube.com/results?search_query=${q}`;
+  }
+};
+
+const handleWatch = useCallback(async (v, type) => {
+  const urlField = type === 'detailed' ? 'detailedUrl' : 'shortUrl';
+  if (v[urlField]) {
+    window.open(v[urlField], '_blank');
+    return;
+  }
+  const loadingKey = `${v.topic}_${type}`;
+  setLoadingVids(prev => ({ ...prev, [loadingKey]: true }));
+  const url = await searchYouTube(v.topic, type);
+  setLoadingVids(prev => ({ ...prev, [loadingKey]: false }));
+  window.open(url, '_blank');
+}, []);
 
   return (
     <div className="fade-up" style={S.page}>
@@ -285,12 +336,14 @@ export default function Materials() {
                 ) : (
                   <div style={S.videoGrid}>
                     {filteredVideos.map((v, i) => (
-                      <VideoCard
-                        key={i}
-                        item={v}
-                        loading={!!loadingVids[v.topic]}
-                        onWatch={() => handleWatch(v)}
-                      />
+<VideoCard
+  key={i}
+  item={v}
+  loadingDetailed={!!loadingVids[`${v.topic}_detailed`]}
+  loadingShort={!!loadingVids[`${v.topic}_short`]}
+  onWatchDetailed={() => handleWatch(v, 'detailed')}
+  onWatchShort={() => handleWatch(v, 'short')}
+/>
                     ))}
                   </div>
                 )}
@@ -341,29 +394,37 @@ function PaperCard({ paper }) {
   );
 }
 
-function VideoCard({ item, loading, onWatch }) {
-  const hasLink = !!item.videoUrl;
+function VideoCard({ item, loadingDetailed, loadingShort, onWatchDetailed, onWatchShort }) {
+  const hasDetailed = !!item.detailedUrl;
+  const hasShort = !!item.shortUrl;
+
   return (
     <div
       style={S.videoCard}
       onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--border-accent)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)';        e.currentTarget.style.transform = 'translateY(0)'; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'translateY(0)'; }}
     >
       <div style={S.videoTop}>
         <span style={S.videoIcon}>▶</span>
-        {!hasLink && (
-          <span style={S.ytBadge}>YT Search</span>
-        )}
+        <span style={S.videoBadge}>JEE Mains</span>
       </div>
       <div style={S.videoTopic}>{item.topic}</div>
-
-      <button
-        style={{ ...S.watchBtn, opacity: loading ? 0.6 : 1 }}
-        onClick={onWatch}
-        disabled={loading}
-      >
-        {loading ? 'Finding…' : hasLink ? 'Watch Playlist →' : 'Find & Watch →'}
-      </button>
+      <div style={S.buttonGroup}>
+        <button
+          style={{ ...S.watchBtnDetailed, opacity: loadingDetailed ? 0.6 : 1 }}
+          onClick={onWatchDetailed}
+          disabled={loadingDetailed}
+        >
+          {loadingDetailed ? 'Finding...' : hasDetailed ? '📘 One-Shot' : '🔍 Find Detailed'}
+        </button>
+        <button
+          style={{ ...S.watchBtnShort, opacity: loadingShort ? 0.6 : 1 }}
+          onClick={onWatchShort}
+          disabled={loadingShort}
+        >
+          {loadingShort ? 'Finding...' : hasShort ? '⚡ Revision (10 min)' : '🔍 Find Short'}
+        </button>
+      </div>
     </div>
   );
 }
@@ -523,7 +584,49 @@ const S = {
     gridTemplateColumns: 'repeat(auto-fill, minmax(168px, 1fr))',
     gap: 12,
   },
-
+    buttonGroup: {
+    display: 'flex',
+    gap: 8,
+    marginTop: 12,
+  },
+  watchBtnDetailed: {
+    flex: 1,
+    padding: '8px 0',
+    background: 'var(--accent-bg)',
+    color: 'var(--accent)',
+    border: '1px solid var(--border-accent)',
+    borderRadius: 7,
+    fontSize: 11.5,
+    fontWeight: 600,
+    cursor: 'pointer',
+    transition: 'opacity 0.15s',
+    fontFamily: 'var(--font-body)',
+    textAlign: 'center',
+  },
+  watchBtnShort: {
+    flex: 1,
+    padding: '8px 0',
+    background: 'rgba(245, 158, 11, 0.1)',
+    color: '#f59e0b',
+    border: '1px solid rgba(245, 158, 11, 0.3)',
+    borderRadius: 7,
+    fontSize: 11.5,
+    fontWeight: 600,
+    cursor: 'pointer',
+    transition: 'opacity 0.15s',
+    fontFamily: 'var(--font-body)',
+    textAlign: 'center',
+  },
+  videoBadge: {
+    fontSize: 9.5,
+    fontWeight: 700,
+    letterSpacing: '0.05em',
+    padding: '2px 7px',
+    borderRadius: 20,
+    background: 'rgba(139, 92, 246, 0.10)',
+    color: '#a78bfa',
+    border: '1px solid rgba(139, 92, 246, 0.25)',
+  },
   /* Paper card */
   paperCard: {
     background: 'var(--surface)',
