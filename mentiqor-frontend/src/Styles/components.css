@@ -1548,3 +1548,8 @@
   margin-bottom: 0;
   color: var(--text-muted);
 }
+
+.sidebar-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

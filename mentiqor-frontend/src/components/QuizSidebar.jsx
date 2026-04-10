@@ -11,7 +11,7 @@ const LEGEND = [
   { key: 'unattempted', label: 'Not attempted', color: 'var(--status-not-visited)' },
 ];
 
-export default function QuizSidebar({ questions, currentIndex, answers, skipped, timeLeft, onNavigate, onSubmit, onExpire }) {
+export default function QuizSidebar({ questions, currentIndex, answers, skipped, timeLeft, onNavigate, onSubmit, onExpire, submitting}) {
   const answered    = Object.keys(answers).length;
   const skippedCnt  = skipped.size;
   const unattempted = questions.length - answered - skippedCnt;
@@ -79,8 +79,8 @@ export default function QuizSidebar({ questions, currentIndex, answers, skipped,
       </div>
 
       {/* Submit */}
-      <button className="sidebar-submit" onClick={onSubmit}>
-        Submit Quiz
+      <button className="sidebar-submit" onClick={onSubmit} disabled={submitting}>
+        {submitting ? 'Submitting...' : 'Submit Quiz'}      
       </button>
     </div>
   );

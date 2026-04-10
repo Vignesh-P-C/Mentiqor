@@ -85,7 +85,7 @@ export default function Quiz({ userId, onNavigate }) {
   const [skipped, setSkipped]     = useState(new Set());
   const [timeLeft, setTimeLeft]   = useState(0);
   const timerRef = useRef(null);
-
+const submittingRef = useRef(false); 
   // Warning modal
   const [showWarning, setShowWarning] = useState(false);
 
@@ -181,10 +181,15 @@ export default function Quiz({ userId, onNavigate }) {
   };
 
   const doSubmit = async () => {
-    clearInterval(timerRef.current);
-    setShowWarning(false);
-    setSubmitting(true);
+  // Prevent multiple submissions
+  if (submittingRef.current) return;
+  submittingRef.current = true;
+  
+  clearInterval(timerRef.current);
+  setShowWarning(false);
+  setSubmitting(true);
 
+  try {
     const results = [];
     for (let i = 0; i < questions.length; i++) {
       const q          = questions[i];
@@ -239,9 +244,14 @@ export default function Quiz({ userId, onNavigate }) {
     } catch { /* non-fatal */ }
 
     setResults(results);
-    setSubmitting(false);
     setStage(STAGE.RESULTS);
-  };
+  } catch (err) {
+    console.error('Submission error:', err);
+  } finally {
+    setSubmitting(false);
+    submittingRef.current = false;
+  }
+};
 
   const handleChapterToggle = (ch) => {
     setSelChapters(prev =>
@@ -456,6 +466,7 @@ export default function Quiz({ userId, onNavigate }) {
           onNavigate={setQIndex}
           onSubmit={handleSubmitClick}
           onExpire={handleAutoSubmit}
+          submitting={submitting} 
         />
       </div>
     </div>
