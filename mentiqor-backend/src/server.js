@@ -1,3 +1,4 @@
+
 const express = require('express');
 const cors    = require('cors');
 require('dotenv').config();
@@ -6,7 +7,9 @@ const app  = express();
 const pool = require('./db');
 app.use(cors());
 app.use(express.json());
-
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
 app.get('/', (req, res) => res.send('Mentiqor backend running'));
 
 app.get('/ping-db', async (req, res) => {
