@@ -1,135 +1,115 @@
 # Mentiqor – JEE Mains Preparation Platform
 
-**🔗 Live Demo: [https://mentiqor.vercel.app](https://mentiqor.vercel.app)**
+<div align="center">
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+**🔗 [mentiqor.vercel.app](https://mentiqor.vercel.app)**
+
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=vercel)](https://mentiqor.vercel.app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js)](https://nodejs.org)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com)
 
 > **Crack JEE Mains** with chapter‑wise practice, real‑exam analysis, PYQ PDFs, and topic‑wise video playlists – all in one place.
 
-Mentiqor helps JEE aspirants practice effectively, track performance, and access high‑quality study materials. Built with React (Vite), Node.js/Express, Supabase (PostgreSQL + Storage), and the YouTube Data API.
+![Dashboard Screenshot](./screenshots/dashboard.png)
+*Dashboard showing accuracy trends and weak topics*
 
-![Dashboard Screenshot](./screenshots/dashboard.png)  
-*Dashboard showing accuracy trends and weak topics* – *placeholder*
+</div>
 
 ---
 
 ## ✨ Features
 
-- **🎯 Adaptive Quiz** – Filter by subject & chapters, timed mock tests, instant scoring.
-- **📊 Performance Dashboard** – Accuracy trends, subject breakdown, weak topics, session history.
-- **📚 Study Materials**  
-  - **PYQ Papers (shift‑wise)** – Download official JEE Main question papers (2022–2025) from Supabase Storage.  
-  - **Video Playlists** – Two modes per topic: **One‑Shot (detailed)** + **⚡ Revision (10 min)**.  
-  - **Smart YouTube fallback** – If no manual link, the YouTube Data API finds the best video.  
-  - **Mark as done** – Track your progress with toggles and progress bars (persists per user).
-- **💬 Motivational Quote** – Daily inspiration from ZenQuotes API.
-- **🌙 Dark Mode** – Warm brown theme (no harsh blue/purple).
+| Feature | Description |
+|---|---|
+| 🎯 **Adaptive Quiz** | Filter by subject & chapters, timed mock tests, instant scoring |
+| 📊 **Performance Dashboard** | Accuracy trends, subject breakdown, weak topics, session history |
+| 📄 **PYQ Papers** | Download official JEE Main shift‑wise papers (2022–2025) |
+| 🎥 **Video Playlists** | One‑Shot (detailed) + ⚡ Revision (10 min) modes per topic |
+| 🔍 **Smart YouTube Fallback** | Auto‑finds the best video via YouTube Data API if no manual link set |
+| ✅ **Progress Tracking** | Mark PYQs and videos as done; progress bars persist per user |
+| 💬 **Daily Quote** | Motivational inspiration via [ZenQuotes API](https://zenquotes.io) |
+| 🌙 **Dark Mode** | Warm brown theme – easy on the eyes during long study sessions |
 
-![Materials Page Screenshot](./screenshots/materials.png)  
-*Materials page with PYQ cards and video playlists* – *placeholder*
+---
+
+## 📸 Screenshots
+
+| Dashboard | Quiz | Materials |
+|:---------:|:----:|:---------:|
+| ![Dashboard](./screenshots/dashboard.png) | ![Quiz](./screenshots/quiz.png) | ![Materials](./screenshots/materials.png) |
+| Accuracy trends & weak topics | Timed adaptive mock tests | PYQ cards & video playlists |
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Category       | Technologies |
-|----------------|--------------|
-| Frontend       | React 18, Vite, CSS variables, Recharts |
-| Backend        | Node.js, Express, PostgreSQL (via Supabase) |
-| Authentication | Supabase Auth (Row Level Security) |
-| Storage        | Supabase Storage (public bucket for PDFs) |
-| APIs           | YouTube Data API v3, ZenQuotes API |
-| Deployment     | Frontend: Vercel, Backend: Render, UptimeRobot (keep‑alive) |
+| Layer | Technologies |
+|---|---|
+| **Frontend** | [React 18](https://reactjs.org), [Vite](https://vitejs.dev), CSS Variables, [Recharts](https://recharts.org) |
+| **Backend** | [Node.js](https://nodejs.org), [Express](https://expressjs.com), [PostgreSQL](https://www.postgresql.org) via Supabase |
+| **Auth** | [Supabase Auth](https://supabase.com/docs/guides/auth) with Row Level Security |
+| **Storage** | [Supabase Storage](https://supabase.com/docs/guides/storage) – public bucket for PDFs |
+| **APIs** | [YouTube Data API v3](https://developers.google.com/youtube/v3), [ZenQuotes API](https://zenquotes.io) |
+| **Deployment** | Frontend: [Vercel](https://vercel.com) · Backend: [Render](https://render.com) · Uptime: [UptimeRobot](https://uptimerobot.com) |
 
 ---
 
-## 🚀 Live Demo
-
-- **Frontend:** [https://mentiqor.vercel.app](https://mentiqor.vercel.app)
-- **Backend API:** [https://mentiqor-backend.onrender.com](https://mentiqor-backend.onrender.com)
-
-> Use a test account or sign up – all features are free.
-
----
-
-## 📦 Getting Started (Local Development)
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+
-- npm or yarn
-- Supabase account (free tier)
-- Google Cloud project with YouTube Data API v3 enabled
 
-### 1. Clone repositories
+- [Node.js 18+](https://nodejs.org/en/download)
+- [npm](https://www.npmjs.com) or [yarn](https://yarnpkg.com)
+- [Supabase](https://supabase.com) account (free tier works)
+- [Google Cloud](https://console.cloud.google.com) project with [YouTube Data API v3](https://developers.google.com/youtube/v3/getting-started) enabled
+
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Vignesh-P-C/Mentiqor.git
 cd Mentiqor
 ```
-The repo contains both mentiqor-frontend and mentiqor-backend folders.
-2. Set up environment variables
 
-Frontend (.env inside mentiqor-frontend/)
+> The repo contains both `mentiqor-frontend/` and `mentiqor-backend/` folders.
+
+### 2. Configure environment variables
+
+**Frontend** – create `mentiqor-frontend/.env`:
 
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key
 VITE_YOUTUBE_API_KEY=your-youtube-api-key
-VITE_API_URL=http://localhost:5000   # for local backend
+VITE_API_URL=http://localhost:5000
 ```
 
-Backend (.env inside mentiqor-backend/)
+**Backend** – create `mentiqor-backend/.env`:
 
 ```env
 DATABASE_URL=postgresql://postgres.xxx:password@aws-xxx.pooler.supabase.com:5432/postgres
 PORT=5000
 ```
 
-3. Install dependencies
+> 💡 Get your Supabase credentials from **Project Settings → API** in your [Supabase dashboard](https://app.supabase.com).
+
+### 3. Install dependencies
 
 ```bash
+# Frontend
 cd mentiqor-frontend && npm install
+
+# Backend
 cd ../mentiqor-backend && npm install
 ```
 
-4. Run database migrations
+### 4. Run database migration
 
-Open your Supabase SQL Editor.
-
-Run the migration from migration.sql (provided in the backend folder or the README section below).
-
-This creates the user_completions table for progress tracking.
-
-5. Set up Supabase Storage
-
-Create a public bucket named pyq-papers.
-
-Inside, create folders 2022, 2023, 2024, 2025.
-
-Upload PDFs with naming pattern: {month}{day}_shift{shift}.pdf (e.g., jan22_shift1.pdf).
-
-6. Run locally
-
-Backend:
-
-```bash
-cd mentiqor-backend
-npm start
-```
-
-Frontend:
-
-```bash
-cd mentiqor-frontend
-npm run dev
-```
-
-Visit http://localhost:5173.
-
-🗄️ Database Migration (SQL)
+Open your [Supabase SQL Editor](https://app.supabase.com) and run:
 
 ```sql
--- user_completions table for marking PYQ/video as done
+-- user_completions table for marking PYQ / video as done
 CREATE TABLE IF NOT EXISTS user_completions (
   id               uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id          uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -141,84 +121,99 @@ CREATE TABLE IF NOT EXISTS user_completions (
 );
 
 ALTER TABLE user_completions ENABLE ROW LEVEL SECURITY;
+
 CREATE POLICY "Users manage own completions" ON user_completions
-  USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
 ```
 
-🔧 Deployment
+### 5. Set up Supabase Storage
 
-Frontend (Vercel)
+1. Create a **public bucket** named `pyq-papers`.
+2. Inside it, create folders: `2022/`, `2023/`, `2024/`, `2025/`.
+3. Upload PDFs using the naming pattern: `{month}{day}_shift{shift}.pdf`
+   - Example: `jan22_shift1.pdf`
 
-Connect your GitHub repo.
+### 6. Start the development servers
 
-Set Root Directory to mentiqor-frontend.
+```bash
+# Terminal 1 – Backend
+cd mentiqor-backend && npm start
 
-Add environment variables (same as local .env).
+# Terminal 2 – Frontend
+cd mentiqor-frontend && npm run dev
+```
 
-Build command: npm run build, output directory: dist.
+Visit **[http://localhost:5173](http://localhost:5173)** 🎉
 
-Backend (Render)
+---
 
-Create a new Web Service, point to the mentiqor-backend folder.
+## ☁️ Deployment
 
-Set build command: npm install, start command: npm start.
+### Frontend – [Vercel](https://vercel.com)
 
-Add environment variables (DATABASE_URL, PORT).
+1. Import your GitHub repo on the [Vercel dashboard](https://vercel.com/new).
+2. Set **Root Directory** → `mentiqor-frontend`.
+3. Add all `VITE_*` environment variables.
+4. Build command: `npm run build` · Output directory: `dist`.
 
-Keep backend awake – use UptimeRobot to ping /health every 5 minutes.
+### Backend – [Render](https://render.com)
 
-YouTube API Key Restrictions
+1. Create a new **Web Service**, point it to `mentiqor-backend`.
+2. Build command: `npm install` · Start command: `npm start`.
+3. Add `DATABASE_URL` and `PORT` environment variables.
+4. **Keep-alive:** Set up a free [UptimeRobot](https://uptimerobot.com) monitor to ping `https://mentiqor-backend.onrender.com/health` every 5 minutes so the free instance doesn't spin down.
 
-In Google Cloud Console, add your Vercel domain (e.g., https://mentiqor.vercel.app/*) to the HTTP referrers.
+### YouTube API – Key Restrictions
 
-📸 Screenshots
+In [Google Cloud Console](https://console.cloud.google.com), go to **APIs & Services → Credentials** and add your Vercel domain (e.g. `https://mentiqor.vercel.app/*`) to the **HTTP referrers** allowlist for your API key.
 
-Dashboard	Quiz	Materials
-https://./screenshots/dashboard.png	https://./screenshots/quiz.png	https://./screenshots/materials.png
-(Add your screenshots to a screenshots/ folder and update the links.)
+---
 
-🤝 Contributing
+## 📅 Roadmap
 
-Contributions are welcome! To contribute:
+- [x] Chapter‑wise adaptive quizzes
+- [x] Performance dashboard with weak-topic detection
+- [x] PYQ papers (2022–2025) with progress tracking
+- [x] Topic‑wise video playlists with YouTube fallback
+- [ ] More PYQ papers covering 2021
+- [ ] Enhanced analytics – chapter‑wise accuracy & improvement graphs
+- [ ] Timetable planner – auto‑schedule weak topics and daily revision sessions
 
-Fork the repository.
+---
 
-Create a feature branch (git checkout -b feature/amazing-feature).
+## 🤝 Contributing
 
-Commit your changes (git commit -m 'Add some amazing feature').
+Contributions are welcome! Here's how:
 
-Push to the branch (git push origin feature/amazing-feature).
+1. **Fork** the repository.
+2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+3. **Commit** your changes: `git commit -m 'Add amazing feature'`
+4. **Push** to the branch: `git push origin feature/amazing-feature`
+5. **Open** a [Pull Request](https://github.com/Vignesh-P-C/Mentiqor/pulls).
 
-Open a Pull Request.
+For major changes, please [open an issue](https://github.com/Vignesh-P-C/Mentiqor/issues) first to discuss your idea.
 
-For major changes, please open an issue first to discuss what you would like to change.
+---
 
-📝 Upcoming Features
+## 📄 License
 
-✅ More questions and PYQ papers (2021–2025).
+Distributed under the [MIT License](./LICENSE).
 
-📈 Enhanced analytics (chapter-wise accuracy, improvement graphs).
+---
 
-📅 Timetable planner – auto-schedule weak topics and daily revision.
+## 👤 Author
 
-📄 License
+**Vignesh P C**
 
-Distributed under the MIT License. See LICENSE file for more information.
+[![GitHub](https://img.shields.io/badge/GitHub-Vignesh--P--C-181717?style=flat&logo=github)](https://github.com/Vignesh-P-C)
 
-👤 Author
+---
 
-Vignesh P C
+## 🙏 Acknowledgements
 
-GitHub: @Vignesh-P-C
-
-🙏 Acknowledgements
-
-Supabase for database, auth, and storage.
-
-YouTube Data API for video search.
-
-ZenQuotes API for motivational quotes.
-
-Vercel and Render for hosting.
-
-Happy cracking JEE Mains! 🚀
+- [Supabase](https://supabase.com) – database, auth, and storage
+- [YouTube Data API](https://developers.google.com/youtube/v3) – video search
+- [ZenQuotes API](https://zenquotes.io) – motivational quotes
+- [Vercel](https://vercel.com) & [Render](https://render.com) – hosting
+- [Recharts](https://recharts.org) – performance charts
