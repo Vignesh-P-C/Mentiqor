@@ -1,7 +1,7 @@
 /* ── Layout ── */
 .app { min-height: 100vh; display: flex; flex-direction: column; }
 
-/* ── Navbar ── */
+/* ──  Navbar  ── */
 .navbar {
   display: flex;
   align-items: center;
