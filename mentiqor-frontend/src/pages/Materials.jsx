@@ -33,7 +33,8 @@ const PYQ_PAPERS = [
 
   ...shifts('2023', 'Jan 24', 'jan24'), ...shifts('2023', 'Jan 25', 'jan25'),
   ...shifts('2023', 'Apr 6',  'apr6'),  ...shifts('2023', 'Apr 13', 'apr13'),
-  ...shifts('2022', 'Jun 24', 'jun24'), ...shifts('2022', 'Jun 25', 'jun25'),
+
+  ...shifts('2022', 'Jun 25', 'jun25'), ...shifts('2022', 'Jun 26', 'jun26'),
   ...shifts('2022', 'Jul 25', 'jul25'),
 ];
 
