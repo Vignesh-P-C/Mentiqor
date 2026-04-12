@@ -1309,10 +1309,11 @@
   cursor: default;
 }
 
+/* Lighter hover for KPI cards – reduced shadow, smaller movement */
 .kpi-card:hover {
-  box-shadow: var(--shadow-raise);
-  border-color: var(--border-accent);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);        /* was shadow-raise, now softer */
+  border-color: var(--border-2);       /* was border-accent, now subtle */
+  transform: translateY(-1px);         /* was -2px, now half */
 }
 
 .kpi-icon  { font-size: 20px; margin-bottom: var(--space-2); }
@@ -1388,7 +1389,13 @@
   gap: var(--space-3);
   transition: all var(--dur-fast);
 }
-.session-row:hover { border-color: var(--border-2); background: var(--surface-3); }
+
+/* Lighter hover for session rows – only background and border change, no extra shadow */
+.session-row:hover {
+  border-color: var(--border-2);      /* already had this */
+  background: var(--surface-3);       /* already had this – keeping as is */
+}
+
 
 /* ─────────────────────────────────────────────────
    11. Modal / Overlay
