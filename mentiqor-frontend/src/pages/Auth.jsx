@@ -106,7 +106,7 @@ export default function Auth() {
                 <label style={S.label}>FULL NAME (optional)</label>
                 <input
                   type="text"
-                  placeholder="e.g., John Doe"
+                  placeholder="Username"
                   value={name}
                   onChange={e => setName(e.target.value)}
                   style={S.input}
