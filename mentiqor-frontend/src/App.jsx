@@ -9,7 +9,7 @@ import Materials from './pages/Materials';
 import './App.css';
 
 export default function App() {
-  const { user, loading, signOut } = useAuth();
+  const { user, loading, signOut, getUserName } = useAuth(); // ← add getUserName here
   const { theme, toggleTheme }     = useTheme();
   const [page, setPage]            = useState('quiz');
 
@@ -22,7 +22,9 @@ export default function App() {
 
   // ── Auth wall ──
   if (!user) return <Auth />;
-  const displayName = getUserName();
+  
+  const displayName = getUserName(); // ← now getUserName is defined
+
   return (
     <div className="app">
       <nav className="navbar">
