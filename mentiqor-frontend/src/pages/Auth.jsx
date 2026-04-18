@@ -3,20 +3,28 @@ import { useAuth } from '../hooks/useAuth';
 
 export default function Auth() {
   const { signIn, signUp } = useAuth();
-  const [tab, setTab]     = useState('login');
+  const [tab, setTab] = useState('login');
   const [email, setEmail] = useState('');
-  const [pass, setPass]   = useState('');
+  const [pass, setPass] = useState('');
+  const [name, setName] = useState(''); // NEW: name field
   const [error, setError] = useState('');
-  const [msg, setMsg]     = useState('');
-  const [busy, setBusy]   = useState(false);
+  const [msg, setMsg] = useState('');
+  const [busy, setBusy] = useState(false);
 
   const handle = async (e) => {
     e.preventDefault();
-    setError(''); setMsg('');
+    setError('');
+    setMsg('');
     setBusy(true);
-    const { error: err } = tab === 'login'
-      ? await signIn(email, pass)
-      : await signUp(email, pass);
+    
+    let result;
+    if (tab === 'login') {
+      result = await signIn(email, pass);
+    } else {
+      result = await signUp(email, pass, name); // Pass name to signUp
+    }
+    
+    const { error: err } = result;
     setBusy(false);
     if (err) return setError(err.message);
     if (tab === 'signup') setMsg('Check your email to confirm your account.');
@@ -24,25 +32,22 @@ export default function Auth() {
 
   return (
     <div style={S.page}>
-      {/* ── Left panel ── */}
+      {/* Left panel (unchanged) */}
       <div style={S.left}>
         <div style={S.gridOverlay} />
         <div style={S.diagBand} />
 
         <div style={S.leftContent}>
-          {/* Brand mark */}
           <div style={S.brandBlock}>
             <div style={S.brandMark} />
             <span style={S.brandName}>MENTIQOR</span>
           </div>
 
-          {/* Hero text */}
           <div style={S.heroBlock}>
             <h1 style={S.heroTitle}>CRACK<br />JEE<br />MAINS</h1>
             <p style={S.heroSub}>Chapter-wise practice with real exam analysis</p>
           </div>
 
-          {/* Features */}
           <div style={S.features}>
             {[
               'Chapter-wise question bank',
@@ -56,7 +61,6 @@ export default function Auth() {
             ))}
           </div>
 
-          {/* Decorative bars */}
           <div style={S.decoRow}>
             {[14, 22, 30, 38, 46].map((h, i) => (
               <div key={i} style={{ ...S.decoBar, height: `${h}px`, opacity: 0.18 + i * 0.1 }} />
@@ -65,10 +69,9 @@ export default function Auth() {
         </div>
       </div>
 
-      {/* ── Right panel ── */}
+      {/* Right panel */}
       <div style={S.right}>
         <div style={S.formWrap}>
-          {/* Header */}
           <div style={S.formHeader}>
             <h2 style={S.formTitle}>
               {tab === 'login' ? 'Welcome back' : 'Create account'}
@@ -80,16 +83,15 @@ export default function Auth() {
             </p>
           </div>
 
-          {/* Underline tabs */}
           <div style={S.tabRow}>
             {[
-              { key: 'login',  label: 'Sign In' },
+              { key: 'login', label: 'Sign In' },
               { key: 'signup', label: 'Sign Up' },
             ].map(({ key, label }) => (
               <button
                 key={key}
                 style={{ ...S.tabBtn, ...(tab === key ? S.tabBtnActive : {}) }}
-                onClick={() => { setTab(key); setError(''); setMsg(''); }}
+                onClick={() => { setTab(key); setError(''); setMsg(''); setName(''); }}
               >
                 {label}
                 {tab === key && <div style={S.tabUnderline} />}
@@ -97,8 +99,23 @@ export default function Auth() {
             ))}
           </div>
 
-          {/* Fields */}
           <form onSubmit={handle} style={S.form}>
+            {/* NEW: Name field - only show during signup */}
+            {tab === 'signup' && (
+              <div style={S.field}>
+                <label style={S.label}>FULL NAME (optional)</label>
+                <input
+                  type="text"
+                  placeholder="e.g., John Doe"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  style={S.input}
+                  onFocus={e => { e.target.style.borderColor = 'var(--accent)'; e.target.style.background = 'var(--surface)'; }}
+                  onBlur={e => { e.target.style.borderColor = 'var(--border-2)'; e.target.style.background = 'var(--surface-2)'; }}
+                />
+              </div>
+            )}
+
             <div style={S.field}>
               <label style={S.label}>EMAIL ADDRESS</label>
               <input
@@ -109,7 +126,7 @@ export default function Auth() {
                 onChange={e => setEmail(e.target.value)}
                 style={S.input}
                 onFocus={e => { e.target.style.borderColor = 'var(--accent)'; e.target.style.background = 'var(--surface)'; }}
-                onBlur={e =>  { e.target.style.borderColor = 'var(--border-2)'; e.target.style.background = 'var(--surface-2)'; }}
+                onBlur={e => { e.target.style.borderColor = 'var(--border-2)'; e.target.style.background = 'var(--surface-2)'; }}
               />
             </div>
 
@@ -123,7 +140,7 @@ export default function Auth() {
                 onChange={e => setPass(e.target.value)}
                 style={S.input}
                 onFocus={e => { e.target.style.borderColor = 'var(--accent)'; e.target.style.background = 'var(--surface)'; }}
-                onBlur={e =>  { e.target.style.borderColor = 'var(--border-2)'; e.target.style.background = 'var(--surface-2)'; }}
+                onBlur={e => { e.target.style.borderColor = 'var(--border-2)'; e.target.style.background = 'var(--surface-2)'; }}
               />
             </div>
 
@@ -155,7 +172,7 @@ export default function Auth() {
             {tab === 'login' ? "Don't have an account? " : 'Already have an account? '}
             <span
               style={S.footerLink}
-              onClick={() => { setTab(tab === 'login' ? 'signup' : 'login'); setError(''); setMsg(''); }}
+              onClick={() => { setTab(tab === 'login' ? 'signup' : 'login'); setError(''); setMsg(''); setName(''); }}
             >
               {tab === 'login' ? 'Sign up' : 'Sign in'}
             </span>

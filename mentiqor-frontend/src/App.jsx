@@ -22,7 +22,7 @@ export default function App() {
 
   // ── Auth wall ──
   if (!user) return <Auth />;
-
+  const displayName = getUserName();
   return (
     <div className="app">
       <nav className="navbar">
@@ -47,13 +47,16 @@ export default function App() {
           <button className="theme-toggle" onClick={toggleTheme} title="Toggle theme">
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
-          <span className="user-email">{user.email}</span>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text)' }}>{displayName}</div>
+            <span className="user-email" style={{ fontSize: '11px' }}>{user.email}</span>
+          </div>
           <button className="signout-btn" onClick={signOut}>Sign out</button>
         </div>
       </nav>
 
       <main className="main-content">
-        {page === 'quiz'      && <Quiz      userId={user.id} onNavigate={setPage} />}
+        {page === 'quiz' && <Quiz userId={user.id} onNavigate={setPage} />}
         {page === 'dashboard' && <Dashboard userId={user.id} onNavigate={setPage} />}
         {page === 'materials' && <Materials />}
       </main>
